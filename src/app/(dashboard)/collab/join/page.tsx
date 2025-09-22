@@ -75,7 +75,7 @@ function JoinWalletContent() {
                 uid: user.uid,
                 email: user.email,
                 name: user.displayName || user.email?.split('@')[0],
-                photoURL: user.photoURL
+                photoURL: user.photoURL || '',
             };
 
             await updateDoc(walletRef, {
