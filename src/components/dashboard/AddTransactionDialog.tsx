@@ -1,11 +1,12 @@
+
 "use client"
 
 import { useState, useEffect } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useToast } from "@/hooks/use-toast"
-import { addTransaction } from "@/lib/actions"
-import type { TransactionFormData } from "@/lib/types"
+import { addTransaction, updateTransaction } from "@/lib/actions"
+import type { Transaction, TransactionFormData } from "@/lib/types"
 import { transactionFormSchema } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,64 +31,95 @@ import { Textarea } from "@/components/ui/textarea"
 import { Plus, Loader2 } from "lucide-react"
 import { useAuth } from "@/lib/auth"
 
+interface AddTransactionDialogProps {
+  transactionToEdit?: Transaction | null;
+  trigger?: React.ReactNode;
+}
 
-export function AddTransactionDialog() {
+export function AddTransactionDialog({ transactionToEdit, trigger }: AddTransactionDialogProps) {
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
   const { user } = useAuth()
-  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, setValue } = useForm<TransactionFormData>({
+  
+  const isEditMode = !!transactionToEdit;
+
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, setValue, watch } = useForm<TransactionFormData>({
       resolver: zodResolver(transactionFormSchema),
-      defaultValues: {
-        type: "expense"
-      }
   });
+
+  const currentType = watch("type", transactionToEdit?.type || "expense");
+
+  useEffect(() => {
+    if (open) {
+      if (isEditMode) {
+        reset({
+          title: transactionToEdit.title,
+          amount: transactionToEdit.amount,
+          type: transactionToEdit.type,
+          category: transactionToEdit.category,
+          notes: transactionToEdit.notes || '',
+        });
+      } else {
+        reset({
+          type: "expense",
+          title: "",
+          amount: undefined,
+          category: "",
+          notes: ""
+        });
+      }
+    }
+  }, [open, isEditMode, transactionToEdit, reset]);
 
   const onSubmit: SubmitHandler<TransactionFormData> = async (data) => {
     if (!user) {
        toast({
         title: "Gagal",
-        description: "Anda harus login untuk menambahkan transaksi.",
+        description: "Anda harus login untuk melanjutkan.",
         variant: "destructive",
       })
       return;
     }
 
     try {
-      await addTransaction(data, user.uid);
-      toast({
-        title: "Sukses",
-        description: "Transaksi berhasil ditambahkan!",
-      });
-      reset();
+      if (isEditMode) {
+        await updateTransaction(transactionToEdit.id, data, user.uid);
+        toast({
+          title: "Sukses",
+          description: "Transaksi berhasil diperbarui!",
+        });
+      } else {
+        await addTransaction(data, user.uid);
+        toast({
+          title: "Sukses",
+          description: "Transaksi berhasil ditambahkan!",
+        });
+      }
       setOpen(false);
     } catch (error: any) {
        toast({
         title: "Gagal",
-        description: error.message || "Terjadi kesalahan saat menambahkan transaksi.",
+        description: error.message || "Terjadi kesalahan pada server.",
         variant: "destructive",
       })
     }
   }
 
 
-  useEffect(() => {
-    if (!open) {
-      reset();
-    }
-  }, [open, reset]);
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="fixed bottom-24 right-4 h-16 w-16 rounded-full shadow-lg bg-foreground text-background hover:bg-foreground/90 z-20 md:bottom-6 md:right-6">
-          <Plus className="h-8 w-8" />
-        </Button>
+        {trigger ? trigger : (
+          <Button className="fixed bottom-24 right-4 h-16 w-16 rounded-full shadow-lg bg-foreground text-background hover:bg-foreground/90 z-20 md:bottom-6 md:right-6">
+            <Plus className="h-8 w-8" />
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="w-[90vw] max-w-[425px] rounded-2xl">
         <DialogHeader>
-          <DialogTitle>Tambah Transaksi</DialogTitle>
+          <DialogTitle>{isEditMode ? 'Edit Transaksi' : 'Tambah Transaksi'}</DialogTitle>
           <DialogDescription>
-            Isi detail transaksi baru Anda. Klik simpan jika sudah selesai.
+            {isEditMode ? 'Perbarui detail transaksi Anda.' : 'Isi detail transaksi baru Anda. Klik simpan jika sudah selesai.'}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
@@ -105,7 +137,7 @@ export function AddTransactionDialog() {
 
             <div>
               <Label htmlFor="type">Tipe</Label>
-              <Select name="type" defaultValue="expense" onValueChange={(value) => setValue("type", value as "income" | "expense")}>
+              <Select name="type" value={currentType} onValueChange={(value) => setValue("type", value as "income" | "expense")}>
                 <SelectTrigger id="type">
                   <SelectValue placeholder="Pilih tipe transaksi" />
                 </SelectTrigger>
@@ -119,7 +151,7 @@ export function AddTransactionDialog() {
 
              <div>
               <Label htmlFor="category">Kategori</Label>
-              <Select name="category" onValueChange={(value) => setValue("category", value)}>
+              <Select name="category" value={watch("category")} onValueChange={(value) => setValue("category", value)}>
                 <SelectTrigger id="category">
                   <SelectValue placeholder="Pilih kategori" />
                 </SelectTrigger>
@@ -145,7 +177,7 @@ export function AddTransactionDialog() {
             <DialogFooter className="pt-4">
                <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Simpan Transaksi
+                Simpan {isEditMode ? 'Perubahan' : 'Transaksi'}
               </Button>
             </DialogFooter>
         </form>

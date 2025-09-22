@@ -12,6 +12,7 @@ import { collection, query, where, orderBy, limit, getDocs, Timestamp, onSnapsho
 import { CATEGORIES } from "@/lib/data"
 import { onAuthStateChanged } from "firebase/auth"
 import React from "react"
+import Link from "next/link";
 
 function TransactionItem({ transaction }: { transaction: Transaction }) {
   const isIncome = transaction.type === 'income';
@@ -26,20 +27,22 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
     : new Date(transaction.date);
 
   return (
-    <div className="flex items-center gap-4 py-3">
-      <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0 bg-muted/50")}>
-          <Icon className="h-5 w-5 text-muted-foreground" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="font-bold truncate">{transaction.title}</p>
-        <p className="text-sm text-muted-foreground">
-          {format(date, "MMM dd", { locale: id })}
+    <Link href={`/transaksi/${transaction.id}`} className="block hover:bg-muted/50 transition-colors">
+        <div className="flex items-center gap-4 py-3 px-6">
+        <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0 bg-muted/50")}>
+            <Icon className="h-5 w-5 text-muted-foreground" />
+        </div>
+        <div className="flex-1 min-w-0">
+            <p className="font-bold truncate">{transaction.title}</p>
+            <p className="text-sm text-muted-foreground">
+            {format(date, "MMM dd", { locale: id })}
+            </p>
+        </div>
+        <p className={cn("font-semibold whitespace-nowrap shrink-0", amountColor)}>
+            {amountSign} {formatCurrency(transaction.amount)}
         </p>
-      </div>
-      <p className={cn("font-semibold whitespace-nowrap shrink-0", amountColor)}>
-        {amountSign} {formatCurrency(transaction.amount)}
-      </p>
-    </div>
+        </div>
+    </Link>
   )
 }
 
@@ -97,9 +100,7 @@ export function TransactionList() {
       <CardContent className="p-0">
         <div className="divide-y divide-border">
           {transactions.length > 0 ? transactions.map((tx) => (
-            <div className="px-6" key={tx.id}>
-              <TransactionItem transaction={tx} />
-            </div>
+            <TransactionItem transaction={tx} key={tx.id} />
           )) : (
             <p className="p-6 text-muted-foreground">Belum ada transaksi.</p>
           )}

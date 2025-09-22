@@ -1,6 +1,7 @@
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+
+import { collection, addDoc, doc, updateDoc, deleteDoc, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import type { Transaction, TransactionFormData } from '@/lib/types';
+import type { TransactionFormData } from '@/lib/types';
 
 export async function addTransaction(data: TransactionFormData, userId: string): Promise<void> {
   if (!userId) {
@@ -8,7 +9,6 @@ export async function addTransaction(data: TransactionFormData, userId: string):
   }
 
   try {
-    // Pastikan `userId` disertakan dalam objek yang akan disimpan
     const transactionData = {
       ...data,
       userId: userId,
@@ -21,5 +21,32 @@ export async function addTransaction(data: TransactionFormData, userId: string):
   } catch (e: any) {
     console.error('Error adding document: ', e);
     throw new Error('Terjadi kesalahan pada server saat menambahkan transaksi.');
+  }
+}
+
+export async function updateTransaction(id: string, data: Partial<TransactionFormData>, userId: string): Promise<void> {
+  if (!userId) {
+    throw new Error('Pengguna tidak terautentikasi.');
+  }
+  try {
+    const transactionRef = doc(db, 'transactions', id);
+    // Note: We don't update the date when editing
+    await updateDoc(transactionRef, data);
+  } catch(e: any) {
+    console.error('Error updating document: ', e);
+    throw new Error('Terjadi kesalahan pada server saat memperbarui transaksi.');
+  }
+}
+
+export async function deleteTransaction(id: string, userId: string): Promise<void> {
+   if (!userId) {
+    throw new Error('Pengguna tidak terautentikasi.');
+  }
+  try {
+    const transactionRef = doc(db, 'transactions', id);
+    await deleteDoc(transactionRef);
+  } catch(e: any) {
+    console.error('Error deleting document: ', e);
+    throw new Error('Terjadi kesalahan pada server saat menghapus transaksi.');
   }
 }
