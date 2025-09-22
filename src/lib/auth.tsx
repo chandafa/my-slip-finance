@@ -2,7 +2,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { onAuthStateChanged, User, signOut, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { onAuthStateChanged, User, signOut, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from './firebase';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -16,6 +16,7 @@ interface AuthContextType {
   loginWithGoogle: () => Promise<void>;
   registerWithEmail: (email:string, password:string) => Promise<any>;
   loginWithEmail: (email:string, password:string) => Promise<any>;
+  sendPasswordReset: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   markOnboardingComplete: () => void;
   enablePin: (enabled: boolean) => void;
@@ -83,6 +84,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
+  const sendPasswordReset = async (email: string): Promise<void> => {
+    return sendPasswordResetEmail(auth, email);
+  }
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -139,6 +144,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     loginWithGoogle,
     registerWithEmail,
     loginWithEmail,
+    sendPasswordReset,
     logout,
     markOnboardingComplete,
     enablePin,

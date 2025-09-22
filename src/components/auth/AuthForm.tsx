@@ -104,7 +104,16 @@ export function AuthForm({ mode }: AuthFormProps) {
               {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Kata Sandi</Label>
+               <div className="flex items-center justify-between">
+                <Label htmlFor="password">Kata Sandi</Label>
+                {mode === "login" && (
+                    <Link href="/forgot-password" passHref>
+                        <span className="text-sm text-primary hover:underline cursor-pointer">
+                            Lupa kata sandi?
+                        </span>
+                    </Link>
+                )}
+               </div>
               <Input id="password" type="password" {...register("password")} placeholder="******" />
               {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
             </div>
