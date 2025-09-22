@@ -1,0 +1,20 @@
+
+{
+    "settings_title": "Settings",
+    "account_security_title": "Account & Security",
+    "account_security_desc": "Manage your account information and security preferences.",
+    "edit_profile_link": "Edit Profile",
+    "security_password_link": "Security & Password",
+    "app_lock_link": "App Lock (PIN)",
+    "notifications_title": "Notifications",
+    "notifications_desc": "Manage your notification preferences.",
+    "promo_notifications_label": "Promo Notifications",
+    "transaction_notifications_label": "Transaction Notifications",
+    "appearance_title": "Appearance",
+    "appearance_desc": "Customize the look and feel of the application.",
+    "dark_mode_label": "Dark Mode",
+    "language_label": "Language",
+    "currency_label": "Currency",
+    "session_title": "Session",
+    "logout_button": "Log Out"
+}

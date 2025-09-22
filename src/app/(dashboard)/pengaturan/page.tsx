@@ -2,28 +2,30 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Bell, Palette, Globe, DollarSign, LogOut, User, Shield, Lock } from "lucide-react";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import Link from "next/link";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function SettingsPage() {
+  const { t, setLanguage, language } = useTranslation();
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Pengaturan</h1>
+      <h1 className="text-2xl font-bold">{t('settings_title')}</h1>
 
       <Card>
         <CardHeader>
-          <CardTitle>Akun & Keamanan</CardTitle>
-          <CardDescription>Kelola informasi akun dan preferensi keamanan Anda.</CardDescription>
+          <CardTitle>{t('account_security_title')}</CardTitle>
+          <CardDescription>{t('account_security_desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-1 divide-y">
           <Link href="/profil">
             <div className="flex items-center justify-between p-4 rounded-lg hover:bg-accent cursor-pointer">
               <div className="flex items-center gap-4">
                 <User className="h-5 w-5 text-muted-foreground" />
-                <span>Edit Profil</span>
+                <span>{t('edit_profile_link')}</span>
               </div>
             </div>
           </Link>
@@ -31,7 +33,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between p-4 rounded-lg hover:bg-accent cursor-pointer">
               <div className="flex items-center gap-4">
                 <Shield className="h-5 w-5 text-muted-foreground" />
-                <span>Keamanan & Kata Sandi</span>
+                <span>{t('security_password_link')}</span>
               </div>
             </div>
           </Link>
@@ -39,7 +41,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between p-4 rounded-lg hover:bg-accent cursor-pointer">
               <div className="flex items-center gap-4">
                 <Lock className="h-5 w-5 text-muted-foreground" />
-                <span>Kunci Aplikasi (PIN)</span>
+                <span>{t('app_lock_link')}</span>
               </div>
             </div>
           </Link>
@@ -48,46 +50,44 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Notifikasi</CardTitle>
-          <CardDescription>Atur preferensi notifikasi Anda.</CardDescription>
+          <CardTitle>{t('notifications_title')}</CardTitle>
+          <CardDescription>{t('notifications_desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-1 divide-y">
           <div className="flex items-center justify-between p-4 rounded-lg">
             <Label htmlFor="promo-notifications" className="flex items-center gap-4 cursor-pointer">
               <Bell className="h-5 w-5 text-muted-foreground" />
-              <span>Notifikasi Promo</span>
+              <span>{t('promo_notifications_label')}</span>
             </Label>
-            <Switch id="promo-notifications" />
           </div>
           <div className="flex items-center justify-between p-4 rounded-lg">
             <Label htmlFor="transaction-notifications" className="flex items-center gap-4 cursor-pointer">
                <Bell className="h-5 w-5 text-muted-foreground" />
-              <span>Notifikasi Transaksi</span>
+              <span>{t('transaction_notifications_label')}</span>
             </Label>
-            <Switch id="transaction-notifications" defaultChecked />
           </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Tampilan</CardTitle>
-          <CardDescription>Sesuaikan tampilan aplikasi.</CardDescription>
+          <CardTitle>{t('appearance_title')}</CardTitle>
+          <CardDescription>{t('appearance_desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-1 divide-y">
           <div className="flex items-center justify-between p-4 rounded-lg">
              <div className="flex items-center gap-4">
               <Palette className="h-5 w-5 text-muted-foreground" />
-              <Label htmlFor="theme-mode">Mode Gelap</Label>
+              <Label htmlFor="theme-mode">{t('dark_mode_label')}</Label>
             </div>
             <ThemeToggle />
           </div>
           <div className="flex items-center justify-between p-4 rounded-lg">
              <div className="flex items-center gap-4">
                <Globe className="h-5 w-5 text-muted-foreground" />
-               <Label htmlFor="language">Bahasa</Label>
+               <Label htmlFor="language">{t('language_label')}</Label>
             </div>
-            <Select defaultValue="id">
+            <Select value={language} onValueChange={(value) => setLanguage(value as 'id' | 'en')}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pilih Bahasa" />
               </SelectTrigger>
@@ -100,7 +100,7 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between p-4 rounded-lg">
             <div className="flex items-center gap-4">
                 <DollarSign className="h-5 w-5 text-muted-foreground" />
-                <Label htmlFor="currency">Mata Uang</Label>
+                <Label htmlFor="currency">{t('currency_label')}</Label>
             </div>
             <Select defaultValue="idr">
               <SelectTrigger className="w-[180px]">
@@ -117,13 +117,13 @@ export default function SettingsPage() {
 
        <Card>
         <CardHeader>
-          <CardTitle>Sesi</CardTitle>
+          <CardTitle>{t('session_title')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <div className="flex items-center justify-between p-4 rounded-lg text-destructive hover:bg-destructive/10 cursor-pointer">
             <div className="flex items-center gap-4">
               <LogOut className="h-5 w-5" />
-              <span>Keluar</span>
+              <span>{t('logout_button')}</span>
             </div>
           </div>
         </CardContent>

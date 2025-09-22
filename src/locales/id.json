@@ -1,0 +1,20 @@
+
+{
+    "settings_title": "Pengaturan",
+    "account_security_title": "Akun & Keamanan",
+    "account_security_desc": "Kelola informasi akun dan preferensi keamanan Anda.",
+    "edit_profile_link": "Edit Profil",
+    "security_password_link": "Keamanan & Kata Sandi",
+    "app_lock_link": "Kunci Aplikasi (PIN)",
+    "notifications_title": "Notifikasi",
+    "notifications_desc": "Atur preferensi notifikasi Anda.",
+    "promo_notifications_label": "Notifikasi Promo",
+    "transaction_notifications_label": "Notifikasi Transaksi",
+    "appearance_title": "Tampilan",
+    "appearance_desc": "Sesuaikan tampilan aplikasi.",
+    "dark_mode_label": "Mode Gelap",
+    "language_label": "Bahasa",
+    "currency_label": "Mata Uang",
+    "session_title": "Sesi",
+    "logout_button": "Keluar"
+}

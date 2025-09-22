@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/lib/auth';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { TranslationProvider } from '@/hooks/use-translation';
 
 export const metadata: Metadata = {
   title: 'MySlip Dashboard',
@@ -29,7 +30,9 @@ export default function RootLayout({
           enableSystem
         >
           <AuthProvider>
-            {children}
+            <TranslationProvider>
+              {children}
+            </TranslationProvider>
           </AuthProvider>
           <Toaster />
         </ThemeProvider>
