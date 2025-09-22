@@ -2,10 +2,11 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { onAuthStateChanged, User, signOut, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from './firebase';
+import { onAuthStateChanged, User, signOut, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from 'firebase/auth';
+import { auth, db } from './firebase';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 interface AuthContextType {
   user: User | null;
@@ -27,6 +28,28 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Helper function to create/update user data in Firestore
+const updateUserInFirestore = async (user: User) => {
+  if (!user) return;
+  const userRef = doc(db, 'users', user.uid);
+  const docSnap = await getDoc(userRef);
+
+  // Only create/update if the document doesn't exist to avoid unnecessary writes
+  if (!docSnap.exists()) {
+    try {
+      await setDoc(userRef, {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || user.email?.split('@')[0],
+        photoURL: user.photoURL
+      }, { merge: true });
+    } catch (error) {
+      console.error("Error updating user in Firestore:", error);
+    }
+  }
+};
+
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
   const [user, setUser] = useState<User | null>(null);
@@ -42,6 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       if (user) {
+        updateUserInFirestore(user);
         // Check if it's the user's first time
         const firstTime = localStorage.getItem('isFirstTime') === null;
         if (firstTime) {
@@ -90,7 +114,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const registerWithEmail = async (email: string, password: string): Promise<any> => {
-    return createUserWithEmailAndPassword(auth, email, password);
+     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+     // Update profile to set a default displayName
+     await updateProfile(userCredential.user, {
+       displayName: email.split('@')[0]
+     });
+     // Manually update the user in our state and firestore
+     const updatedUser = { ...userCredential.user, displayName: email.split('@')[0] };
+     setUser(updatedUser as User);
+     await updateUserInFirestore(updatedUser as User);
+     return userCredential;
   }
 
   const loginWithEmail = async (email: string, password: string): Promise<any> => {

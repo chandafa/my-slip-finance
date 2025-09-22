@@ -5,8 +5,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 import { db } from '@/lib/firebase';
-import { doc, getDoc, onSnapshot, updateDoc, arrayUnion, arrayRemove, collection, addDoc, serverTimestamp, query, orderBy } from 'firebase/firestore';
-import type { Wallet, WalletTransaction, TransactionFormData } from '@/lib/types';
+import { doc, getDoc, onSnapshot, updateDoc, arrayUnion, arrayRemove, collection, addDoc, serverTimestamp, query, orderBy, where, getDocs } from 'firebase/firestore';
+import type { Wallet, WalletTransaction, TransactionFormData, WalletMember } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { formatCurrency, cn } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
@@ -90,7 +90,53 @@ export default function WalletDetailPage() {
   const isOwner = useMemo(() => user && wallet && wallet.ownerId === user.uid, [user, wallet]);
 
   const handleInvite = async () => {
-    toast({ title: "Fitur Dalam Pengembangan", description: "Fitur undang via email akan segera hadir. Gunakan 'Bagikan Tautan' untuk saat ini.", variant: "default" });
+    if (!inviteEmail.trim()) {
+      toast({ title: "Gagal", description: "Email tidak boleh kosong.", variant: "destructive" });
+      return;
+    }
+    if (!wallet) return;
+
+    setInviting(true);
+    try {
+      // 1. Find user by email in 'users' collection
+      const usersQuery = query(collection(db, 'users'), where('email', '==', inviteEmail.trim()));
+      const querySnapshot = await getDocs(usersQuery);
+
+      if (querySnapshot.empty) {
+        toast({ title: "Gagal", description: "Pengguna dengan email tersebut tidak ditemukan.", variant: "destructive" });
+        return;
+      }
+      
+      const userToInvite = querySnapshot.docs[0].data() as WalletMember;
+      
+      // 2. Check if user is already a member
+      if (wallet.memberIds.includes(userToInvite.uid)) {
+        toast({ title: "Gagal", description: "Pengguna ini sudah menjadi anggota dompet.", variant: "default" });
+        return;
+      }
+
+      // 3. Add user to the wallet
+      const walletRef = doc(db, 'wallets', walletId);
+      await updateDoc(walletRef, {
+        memberIds: arrayUnion(userToInvite.uid),
+        members: arrayUnion({
+          uid: userToInvite.uid,
+          email: userToInvite.email,
+          name: userToInvite.name,
+          photoURL: userToInvite.photoURL || '',
+        })
+      });
+
+      toast({ title: "Sukses", description: `${userToInvite.name || userToInvite.email} telah ditambahkan ke dompet.` });
+      setInviteEmail('');
+      setIsInviteOpen(false);
+
+    } catch (error) {
+      console.error("Error inviting user:", error);
+      toast({ title: "Gagal", description: "Terjadi kesalahan saat mengundang pengguna.", variant: "destructive" });
+    } finally {
+      setInviting(false);
+    }
   };
   
   const handleCopyInviteLink = () => {
@@ -221,12 +267,12 @@ export default function WalletDetailPage() {
                                 <div className="space-y-2">
                                     <Label htmlFor="invite-email" className="flex items-center gap-2"><Mail/> Undang via Email</Label>
                                     <div className="flex gap-2">
-                                        <Input id="invite-email" type="email" placeholder="nama@email.com" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} disabled />
-                                        <Button onClick={handleInvite} disabled={true}>
+                                        <Input id="invite-email" type="email" placeholder="nama@email.com" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} />
+                                        <Button onClick={handleInvite} disabled={inviting}>
+                                            {inviting && <Loader2 className="animate-spin mr-2" />}
                                             Kirim
                                         </Button>
                                     </div>
-                                    <p className="text-xs text-muted-foreground">Fitur ini sedang dalam pengembangan. Gunakan tautan di bawah.</p>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="invite-link" className="flex items-center gap-2"><LinkIcon/> Bagikan Tautan</Label>
@@ -335,5 +381,3 @@ export default function WalletDetailPage() {
     </div>
   );
 }
-
-    
