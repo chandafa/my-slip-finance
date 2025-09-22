@@ -2,7 +2,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { onAuthStateChanged, User, signOut, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { onAuthStateChanged, User, signOut, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from './firebase';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -14,6 +14,7 @@ interface AuthContextType {
   isPinEnabled: boolean;
   isPinLocked: boolean;
   loginWithGoogle: () => Promise<void>;
+  loginWithGitHub: () => Promise<void>;
   registerWithEmail: (email:string, password:string) => Promise<any>;
   loginWithEmail: (email:string, password:string) => Promise<any>;
   sendPasswordReset: (email: string) => Promise<void>;
@@ -71,8 +72,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await signInWithPopup(auth, provider);
       // Let the onAuthStateChanged handle redirection
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error during Google sign-in:", error);
+      toast({ title: 'Gagal Login Google', description: error.message, variant: 'destructive'});
+    }
+  };
+
+  const loginWithGitHub = async () => {
+    const provider = new GithubAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      // Let the onAuthStateChanged handle redirection
+    } catch (error: any) {
+      console.error("Error during GitHub sign-in:", error);
+      toast({ title: 'Gagal Login GitHub', description: error.message, variant: 'destructive'});
     }
   };
 
@@ -142,6 +155,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isPinEnabled,
     isPinLocked,
     loginWithGoogle,
+    loginWithGitHub,
     registerWithEmail,
     loginWithEmail,
     sendPasswordReset,

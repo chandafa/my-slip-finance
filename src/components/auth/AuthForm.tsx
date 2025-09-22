@@ -17,6 +17,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 
 const loginSchema = z.object({
@@ -41,9 +42,10 @@ type AuthFormProps = {
 export function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
   const { toast } = useToast();
-  const { loginWithGoogle, loginWithEmail, registerWithEmail } = useAuth();
+  const { loginWithGoogle, loginWithGitHub, loginWithEmail, registerWithEmail } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isGitHubLoading, setIsGitHubLoading] = useState(false);
 
   const schema = mode === "login" ? loginSchema : registerSchema;
   type FormValues = z.infer<typeof schema>;
@@ -83,7 +85,24 @@ export function AuthForm({ mode }: AuthFormProps) {
         description: error.message,
         variant: "destructive",
       });
+    } finally {
       setIsGoogleLoading(false);
+    }
+  };
+
+  const handleGitHubSignIn = async () => {
+    setIsGitHubLoading(true);
+    try {
+      await loginWithGitHub();
+      // On successful login, the AuthProvider will handle redirection
+    } catch (error: any) {
+      toast({
+        title: "Gagal Masuk dengan GitHub",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsGitHubLoading(false);
     }
   };
 
@@ -134,10 +153,16 @@ export function AuthForm({ mode }: AuthFormProps) {
             <span className="mx-4 text-xs text-muted-foreground">ATAU</span>
             <Separator className="flex-1" />
           </div>
-           <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isGoogleLoading}>
-             {isGoogleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FcGoogle className="mr-2 h-5 w-5" />}
-            Lanjutkan dengan Google
-          </Button>
+          <div className="space-y-2">
+            <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isGoogleLoading || isGitHubLoading}>
+              {isGoogleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FcGoogle className="mr-2 h-5 w-5" />}
+              Lanjutkan dengan Google
+            </Button>
+            <Button variant="outline" className="w-full" onClick={handleGitHubSignIn} disabled={isGitHubLoading || isGoogleLoading}>
+              {isGitHubLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FaGithub className="mr-2 h-5 w-5" />}
+              Lanjutkan dengan GitHub
+            </Button>
+          </div>
         </CardContent>
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
