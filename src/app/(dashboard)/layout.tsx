@@ -17,11 +17,23 @@ function ProtectedLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!loading && !user) {
       router.push("/login");
+    } else if (!loading && user) {
+        const redirectPath = localStorage.getItem('redirectAfterLogin');
+        if (redirectPath) {
+            localStorage.removeItem('redirectAfterLogin');
+            router.push(redirectPath);
+        }
     }
   }, [user, loading, router]);
 
-  if (loading || !user) {
+  if (loading || (!user && !localStorage.getItem('redirectAfterLogin'))) {
     return <Splash />;
+  }
+  
+  if (!user && localStorage.getItem('redirectAfterLogin')) {
+     // User is not logged in, but we need to go to a protected route (like join)
+     // Let the useEffect handle the redirect to login page. Show a loader in the meantime.
+     return <Splash />;
   }
 
   if (isPinEnabled && isPinLocked) {
@@ -52,3 +64,5 @@ export default function DashboardLayout({
     </AuthProvider>
   )
 }
+
+    

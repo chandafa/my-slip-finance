@@ -91,9 +91,7 @@ export default function WalletDetailPage() {
   const isOwner = useMemo(() => user && wallet && wallet.ownerId === user.uid, [user, wallet]);
 
   const handleInvite = async () => {
-    if (!inviteEmail.trim() || !isOwner) return;
-    toast({ title: "Fitur Dalam Pengembangan", description: "Mengundang via email akan segera hadir.", variant: "default" });
-    // TODO: Implement Cloud Function to find user by email and add them.
+    toast({ title: "Fitur Dalam Pengembangan", description: "Fitur undang via email akan segera hadir. Gunakan 'Bagikan Tautan' untuk saat ini.", variant: "default" });
   };
   
   const handleCopyInviteLink = () => {
@@ -116,6 +114,11 @@ export default function WalletDetailPage() {
     setAddingTx(true);
     try {
         const amountNumber = parseFloat(txAmount);
+        if (isNaN(amountNumber)) {
+            toast({ title: "Gagal", description: "Jumlah harus berupa angka.", variant: "destructive" });
+            return;
+        }
+
         const newBalance = txType === 'income' ? wallet!.balance + amountNumber : wallet!.balance - amountNumber;
 
         const txCollectionRef = collection(db, "wallets", walletId, "transactions");
@@ -157,10 +160,15 @@ export default function WalletDetailPage() {
 
     try {
         const walletRef = doc(db, "wallets", walletId);
-        await updateDoc(walletRef, {
-            memberIds: arrayRemove(user.uid),
-            members: arrayRemove(wallet.members.find(m => m.uid === user.uid))
-        });
+        const memberToRemove = wallet.members.find(m => m.uid === user.uid);
+
+        if (memberToRemove) {
+          await updateDoc(walletRef, {
+              memberIds: arrayRemove(user.uid),
+              members: arrayRemove(memberToRemove)
+          });
+        }
+        
         toast({ title: "Berhasil", description: "Anda telah meninggalkan dompet." });
         router.push('/collab');
     } catch (error) {
@@ -214,11 +222,12 @@ export default function WalletDetailPage() {
                                 <div className="space-y-2">
                                     <Label htmlFor="invite-email" className="flex items-center gap-2"><Mail/> Undang via Email</Label>
                                     <div className="flex gap-2">
-                                        <Input id="invite-email" type="email" placeholder="nama@email.com" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} />
-                                        <Button onClick={handleInvite} disabled={inviting}>
-                                            {inviting && <Loader2 className="animate-spin mr-2" />} Kirim
+                                        <Input id="invite-email" type="email" placeholder="nama@email.com" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} disabled />
+                                        <Button onClick={handleInvite} disabled={true}>
+                                            Kirim
                                         </Button>
                                     </div>
+                                    <p className="text-xs text-muted-foreground">Fitur ini sedang dalam pengembangan. Gunakan tautan di bawah.</p>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="invite-link" className="flex items-center gap-2"><LinkIcon/> Bagikan Tautan</Label>
@@ -237,8 +246,8 @@ export default function WalletDetailPage() {
                     <div key={member.uid} className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage src={`https://i.pravatar.cc/150?u=${member.uid}`} />
-                                <AvatarFallback>{member.name.charAt(0).toUpperCase()}</AvatarFallback>
+                                <AvatarImage src={member.photoURL || `https://i.pravatar.cc/150?u=${member.uid}`} />
+                                <AvatarFallback>{member.name ? member.name.charAt(0).toUpperCase() : '?'}</AvatarFallback>
                             </Avatar>
                             <div>
                                 <p className="font-medium text-sm">{member.name}</p>
@@ -327,7 +336,5 @@ export default function WalletDetailPage() {
     </div>
   );
 }
-
-
 
     

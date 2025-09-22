@@ -70,7 +70,12 @@ export default function CollabPage() {
         name: newWalletName,
         ownerId: user.uid,
         memberIds: [user.uid],
-        members: [{ uid: user.uid, email: user.email, name: user.displayName || user.email?.split('@')[0] }],
+        members: [{ 
+            uid: user.uid, 
+            email: user.email, 
+            name: user.displayName || user.email?.split('@')[0],
+            photoURL: user.photoURL 
+        }],
         balance: 0,
         createdAt: serverTimestamp(),
       });
@@ -150,10 +155,11 @@ export default function CollabPage() {
       ) : (
          <div className="text-center py-16 border-2 border-dashed rounded-lg">
             <p className="text-muted-foreground">Anda belum bergabung dengan dompet kolaborasi manapun.</p>
-            <p className="text-muted-foreground">Buat dompet baru untuk memulai!</p>
+            <p className="text-muted-foreground">Buat dompet baru atau gabung lewat tautan undangan!</p>
         </div>
       )}
     </div>
   );
 }
 
+    

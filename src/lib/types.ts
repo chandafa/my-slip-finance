@@ -1,4 +1,5 @@
 
+
 import type { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 
@@ -38,6 +39,7 @@ export type WalletMember = {
   uid: string;
   email: string | null;
   name: string | null;
+  photoURL?: string | null;
 }
 
 export type Wallet = {
@@ -59,3 +61,5 @@ export type WalletTransaction = {
     authorName: string;
     createdAt: Timestamp;
 }
+
+    
