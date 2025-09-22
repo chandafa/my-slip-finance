@@ -9,6 +9,19 @@ import { TranslationProvider } from '@/hooks/use-translation';
 export const metadata: Metadata = {
   title: 'MySlip Dashboard',
   description: 'Your personal finance dashboard.',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'MySlip',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    shortcut: '/favicon.ico',
+    apple: [{ url: '/icons/icon-192x192.png', sizes: '192x192' }],
+  },
 };
 
 export default function RootLayout({
@@ -22,6 +35,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <meta name="theme-color" content="#000000" />
       </head>
       <body className={cn("font-body antialiased")}>
         <ThemeProvider
