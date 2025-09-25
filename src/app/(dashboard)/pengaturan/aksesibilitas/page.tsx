@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -17,7 +16,8 @@ export default function AccessibilitySettingsPage() {
     const { t } = useTranslation();
     const { 
         highContrast, setHighContrast, 
-        textSize, setTextSize
+        textSize, setTextSize,
+        textToSpeech, setTextToSpeech
     } = useAccessibility();
 
     return (
@@ -40,7 +40,7 @@ export default function AccessibilitySettingsPage() {
                             <Volume2 className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_tts_label')}
                         </Label>
-                        <Switch id="tts-switch" />
+                        <Switch id="tts-switch" checked={textToSpeech} onCheckedChange={setTextToSpeech}/>
                     </div>
                      <div className="flex items-center justify-between pt-4">
                         <Label htmlFor="subtitles-switch" className="flex items-center gap-4 cursor-pointer text-base">

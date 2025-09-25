@@ -9,6 +9,8 @@ interface AccessibilityContextType {
   setHighContrast: (enabled: boolean) => void;
   textSize: TextSizeType;
   setTextSize: (size: TextSizeType) => void;
+  textToSpeech: boolean;
+  setTextToSpeech: (enabled: boolean) => void;
 }
 
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
@@ -16,6 +18,7 @@ const AccessibilityContext = createContext<AccessibilityContextType | undefined>
 export const AccessibilityProvider = ({ children }: { children: ReactNode }) => {
   const [highContrast, setHighContrastState] = useState<boolean>(false);
   const [textSize, setTextSizeState] = useState<TextSizeType>('text-base');
+  const [textToSpeech, setTextToSpeechState] = useState<boolean>(false);
 
   // Load settings from localStorage on initial render
   useEffect(() => {
@@ -26,6 +29,9 @@ export const AccessibilityProvider = ({ children }: { children: ReactNode }) => 
     if (['text-sm', 'text-base', 'text-lg'].includes(storedTextSize)) {
       setTextSizeState(storedTextSize);
     }
+    
+    const storedTextToSpeech = localStorage.getItem('accessibility-tts') === 'true';
+    setTextToSpeechState(storedTextToSpeech);
   }, []);
 
   // Apply high contrast class to body
@@ -53,11 +59,18 @@ export const AccessibilityProvider = ({ children }: { children: ReactNode }) => 
     setTextSizeState(size);
   };
   
+  const setTextToSpeech = (enabled: boolean) => {
+    setTextToSpeechState(enabled);
+    localStorage.setItem('accessibility-tts', String(enabled));
+  }
+  
   const value = {
     highContrast,
     setHighContrast,
     textSize,
     setTextSize,
+    textToSpeech,
+    setTextToSpeech,
   };
 
   return (
