@@ -132,13 +132,18 @@ export default function TransactionDetailPage() {
       </div>
       
       <Card>
-        <CardHeader className="text-center bg-muted/30 items-center">
-            <p className={cn("text-4xl font-bold", isIncome ? 'text-green-600' : 'text-red-500')}>
+        <CardHeader className={cn(
+          "text-center items-center",
+          isIncome ? 'bg-income text-income-foreground' : 'bg-expense text-expense-foreground'
+        )}>
+            <p className="text-4xl font-bold">
                 {isIncome ? '+' : '-'} {formatCurrency(transaction.amount)}
             </p>
             <CardTitle className="text-2xl">{transaction.title}</CardTitle>
-            <Badge variant="outline" className="mt-1">{transaction.category}</Badge>
-            <CardDescription className="pt-2">{format(date, 'eeee, dd MMMM yyyy, HH:mm', { locale: language === 'id' ? id : enUS })}</CardDescription>
+            <Badge variant={isIncome ? 'default' : 'destructive'} className="mt-1 bg-background/20 text-foreground">{transaction.category}</Badge>
+            <CardDescription className={cn("pt-2", isIncome ? 'text-income-foreground/80' : 'text-expense-foreground/80')}>
+                {format(date, 'eeee, dd MMMM yyyy, HH:mm', { locale: language === 'id' ? id : enUS })}
+            </CardDescription>
         </CardHeader>
         <CardContent className="p-6 grid gap-4">
              <div className="flex items-center gap-4">
