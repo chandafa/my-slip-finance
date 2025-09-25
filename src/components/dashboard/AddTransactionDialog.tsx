@@ -110,9 +110,11 @@ export function AddTransactionDialog({ transactionToEdit, trigger }: AddTransact
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger ? trigger : (
-          <Button className="fixed bottom-24 right-4 h-16 w-16 rounded-full shadow-lg bg-foreground text-background hover:bg-foreground/90 z-20 md:bottom-6 md:right-6">
-            <Plus className="h-8 w-8" />
-          </Button>
+          <div id="add-transaction-tour" className="fixed bottom-24 right-4 z-20 md:bottom-6 md:right-6">
+            <Button className="h-16 w-16 rounded-full shadow-lg bg-foreground text-background hover:bg-foreground/90">
+              <Plus className="h-8 w-8" />
+            </Button>
+          </div>
         )}
       </DialogTrigger>
       <DialogContent className="w-[90vw] max-w-[425px] rounded-2xl">

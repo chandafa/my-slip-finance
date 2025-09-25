@@ -49,7 +49,7 @@ export function MobileNav() {
   }, [pathname]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-10 p-4 md:hidden">
+    <div id="mobile-nav-tour" className="fixed bottom-0 left-0 right-0 z-10 p-4 md:hidden">
       <div 
         ref={containerRef}
         className="relative flex h-16 items-center justify-around rounded-full bg-card shadow-lg"

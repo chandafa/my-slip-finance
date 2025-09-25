@@ -6,6 +6,7 @@ import { BalanceCard } from "@/components/dashboard/BalanceCard"
 import { StatCard } from "@/components/dashboard/StatCard"
 import { IncomeExpenseChart } from "@/components/dashboard/IncomeExpenseChart"
 import { TransactionList } from "@/components/dashboard/TransactionList"
+import { DashboardTour } from "@/components/dashboard/DashboardTour"
 import { useAuth } from '@/lib/auth';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -44,7 +45,8 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <DashboardTour />
+      <div id="balance-card-tour" className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <div className="col-span-1 md:col-span-2 lg:col-span-2">
           <BalanceCard balance={balance} />
         </div>
