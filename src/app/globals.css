@@ -93,4 +93,11 @@
     @apply bg-background text-foreground;
     -webkit-tap-highlight-color: transparent;
   }
+  .tour-highlight {
+    @apply ring-4 ring-primary ring-offset-4 ring-offset-background;
+    transition: box-shadow 0.3s ease-in-out;
+    border-radius: var(--radius);
+    z-index: 9999;
+    position: relative;
+  }
 }
