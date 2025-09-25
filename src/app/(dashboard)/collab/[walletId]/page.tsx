@@ -18,7 +18,8 @@ import { Loader2, Plus, ArrowLeft, Users, Mail, Link as LinkIcon, LogOut, ArrowU
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
+import { id, enUS } from 'date-fns/locale';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function WalletDetailPage() {
   const { user } = useAuth();
@@ -26,6 +27,7 @@ export default function WalletDetailPage() {
   const params = useParams();
   const walletId = params.walletId as string;
   const { toast } = useToast();
+  const { t, language } = useTranslation();
 
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [transactions, setTransactions] = useState<WalletTransaction[]>([]);
@@ -243,7 +245,7 @@ export default function WalletDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="md:col-span-1">
             <CardHeader>
-                <CardTitle>Saldo Saat Ini</CardTitle>
+                <CardTitle>{t('collab_detail_balance')}</CardTitle>
             </CardHeader>
             <CardContent>
                 <p className="text-4xl font-bold">{formatCurrency(wallet.balance)}</p>
@@ -252,33 +254,33 @@ export default function WalletDetailPage() {
         
         <Card className="md:col-span-2">
             <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Anggota ({wallet.members.length})</CardTitle>
+                <CardTitle>{t('collab_detail_members')} ({wallet.members.length})</CardTitle>
                  {isOwner && (
                     <Dialog open={isInviteOpen} onOpenChange={setIsInviteOpen}>
                         <DialogTrigger asChild>
-                            <Button size="sm"><Plus className="mr-2"/> Undang</Button>
+                            <Button size="sm"><Plus className="mr-2"/> {t('collab_detail_invite_button')}</Button>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Undang Anggota Baru</DialogTitle>
-                                <DialogDescription>Undang melalui email atau bagikan tautan unik.</DialogDescription>
+                                <DialogTitle>{t('collab_detail_invite_dialog_title')}</DialogTitle>
+                                <DialogDescription>{t('collab_detail_invite_dialog_desc')}</DialogDescription>
                             </DialogHeader>
                             <div className="py-4 space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="invite-email" className="flex items-center gap-2"><Mail/> Undang via Email</Label>
+                                    <Label htmlFor="invite-email" className="flex items-center gap-2"><Mail/> {t('collab_detail_invite_email_label')}</Label>
                                     <div className="flex gap-2">
                                         <Input id="invite-email" type="email" placeholder="nama@email.com" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} />
                                         <Button onClick={handleInvite} disabled={inviting}>
                                             {inviting && <Loader2 className="animate-spin mr-2" />}
-                                            Kirim
+                                            {t('collab_detail_invite_email_button')}
                                         </Button>
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="invite-link" className="flex items-center gap-2"><LinkIcon/> Bagikan Tautan</Label>
+                                    <Label htmlFor="invite-link" className="flex items-center gap-2"><LinkIcon/> {t('collab_detail_invite_link_label')}</Label>
                                      <div className="flex gap-2">
                                         <Input readOnly value={`${window.location.origin}/collab/join?id=${walletId}`} />
-                                        <Button onClick={handleCopyInviteLink}>Salin</Button>
+                                        <Button onClick={handleCopyInviteLink}>{t('collab_detail_invite_copy_button')}</Button>
                                     </div>
                                 </div>
                             </div>
@@ -299,7 +301,7 @@ export default function WalletDetailPage() {
                                 <p className="text-xs text-muted-foreground">{member.email}</p>
                             </div>
                         </div>
-                        {wallet.ownerId === member.uid && <span className="text-xs font-semibold text-primary">Pemilik</span>}
+                        {wallet.ownerId === member.uid && <span className="text-xs font-semibold text-primary">{t('collab_detail_owner_badge')}</span>}
                     </div>
                 ))}
             </CardContent>
@@ -308,31 +310,31 @@ export default function WalletDetailPage() {
 
        <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Riwayat Transaksi</CardTitle>
+                <CardTitle>{t('collab_detail_tx_history')}</CardTitle>
                 <Dialog open={isTxOpen} onOpenChange={setIsTxOpen}>
                     <DialogTrigger asChild>
-                        <Button variant="outline"><Plus className="mr-2" /> Tambah Transaksi</Button>
+                        <Button variant="outline"><Plus className="mr-2" /> {t('collab_detail_add_tx_button')}</Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Tambah Transaksi Dompet</DialogTitle>
+                            <DialogTitle>{t('collab_detail_add_tx_dialog_title')}</DialogTitle>
                         </DialogHeader>
                         <div className="space-y-4 py-4">
-                            <Input placeholder="Judul" value={txTitle} onChange={e => setTxTitle(e.target.value)} />
-                            <Input type="number" placeholder="Jumlah" value={txAmount} onChange={e => setTxAmount(e.target.value)} />
+                            <Input placeholder={t('collab_detail_add_tx_dialog_title_placeholder')} value={txTitle} onChange={e => setTxTitle(e.target.value)} />
+                            <Input type="number" placeholder={t('collab_detail_add_tx_dialog_amount_placeholder')} value={txAmount} onChange={e => setTxAmount(e.target.value)} />
                             <Select value={txType} onValueChange={(v) => setTxType(v as any)}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Pilih tipe" />
+                                    <SelectValue placeholder={t('collab_detail_add_tx_dialog_type_placeholder')} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="expense">Pengeluaran</SelectItem>
-                                    <SelectItem value="income">Pemasukan</SelectItem>
+                                    <SelectItem value="expense">{t('add_tx_dialog_type_expense')}</SelectItem>
+                                    <SelectItem value="income">{t('add_tx_dialog_type_income')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                         <DialogFooter>
                             <Button onClick={handleAddTransaction} disabled={addingTx}>
-                                {addingTx && <Loader2 className="animate-spin mr-2" />} Simpan
+                                {addingTx && <Loader2 className="animate-spin mr-2" />} {t('collab_detail_add_tx_dialog_save_button')}
                             </Button>
                         </DialogFooter>
                     </DialogContent>
@@ -350,7 +352,7 @@ export default function WalletDetailPage() {
                                     <div>
                                         <p className="font-bold">{tx.title}</p>
                                         <p className="text-sm text-muted-foreground">
-                                            oleh {tx.authorName} pada {tx.createdAt ? format(tx.createdAt.toDate(), 'd MMM yyyy, HH:mm', { locale: id }) : 'sebentar...'}
+                                            {t('collab_detail_tx_by')} {tx.authorName} {t('collab_detail_tx_at')} {tx.createdAt ? format(tx.createdAt.toDate(), 'd MMM yyyy, HH:mm', { locale: language === 'id' ? id : enUS }) : '...'}
                                         </p>
                                     </div>
                                 </div>
@@ -361,7 +363,7 @@ export default function WalletDetailPage() {
                         ))}
                     </div>
                 ) : (
-                    <p className="text-center text-muted-foreground py-8">Belum ada transaksi di dompet ini.</p>
+                    <p className="text-center text-muted-foreground py-8">{t('collab_detail_tx_empty')}</p>
                 )}
             </CardContent>
         </Card>
@@ -369,11 +371,11 @@ export default function WalletDetailPage() {
         {!isOwner && (
             <Card>
                 <CardHeader>
-                    <CardTitle>Tindakan</CardTitle>
+                    <CardTitle>{t('collab_detail_actions_title')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Button variant="destructive" onClick={handleLeaveWallet}>
-                        <LogOut className="mr-2" /> Keluar dari Dompet
+                        <LogOut className="mr-2" /> {t('collab_detail_leave_button')}
                     </Button>
                 </CardContent>
             </Card>
@@ -381,3 +383,5 @@ export default function WalletDetailPage() {
     </div>
   );
 }
+
+    

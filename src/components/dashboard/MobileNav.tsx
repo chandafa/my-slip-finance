@@ -6,19 +6,21 @@ import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { Home, BarChart2, TrendingUp, Settings, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { href: "/dashboard", icon: Home, label: "Home" },
-  { href: "/laporan", icon: BarChart2, label: "Laporan" },
-  { href: "/tren", icon: TrendingUp, label: "Tren" },
-  { href: "/collab", icon: Wallet, label: "Kolaborasi"},
-  { href: "/pengaturan", icon: Settings, label: "Pengaturan" },
-];
+import { useTranslation } from "@/hooks/use-translation";
 
 export function MobileNav() {
   const pathname = usePathname();
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
+
+  const navItems = [
+    { href: "/dashboard", icon: Home, label: t('nav_home') },
+    { href: "/laporan", icon: BarChart2, label: t('nav_report') },
+    { href: "/tren", icon: TrendingUp, label: t('nav_trend') },
+    { href: "/collab", icon: Wallet, label: t('nav_collab')},
+    { href: "/pengaturan", icon: Settings, label: t('nav_settings') },
+  ];
 
   useEffect(() => {
     let foundIndex = navItems.findIndex(item => pathname.startsWith(item.href));
@@ -46,7 +48,7 @@ export function MobileNav() {
           setActiveIndex(homeIndex);
       }
     }
-  }, [pathname]);
+  }, [pathname, navItems]);
 
   return (
     <div id="mobile-nav-tour" className="fixed bottom-0 left-0 right-0 z-10 p-4">
@@ -86,3 +88,5 @@ export function MobileNav() {
     </div>
   );
 }
+
+    

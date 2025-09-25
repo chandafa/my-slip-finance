@@ -1,6 +1,10 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+
+"use client";
+
+import { Card, CardContent } from "@/components/ui/card"
 import { formatCurrency } from "@/lib/utils"
 import { cn } from "@/lib/utils"
+import { useTranslation } from "@/hooks/use-translation";
 
 type StatCardProps = {
   title: string;
@@ -10,6 +14,7 @@ type StatCardProps = {
 };
 
 export function StatCard({ title, value, icon, type }: StatCardProps) {
+  const { t } = useTranslation();
   const cardClass = type === 'income' ? "bg-income text-income-foreground" : "bg-expense text-expense-foreground";
 
   return (
@@ -26,3 +31,5 @@ export function StatCard({ title, value, icon, type }: StatCardProps) {
     </Card>
   )
 }
+
+    

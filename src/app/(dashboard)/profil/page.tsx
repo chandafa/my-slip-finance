@@ -7,22 +7,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function ProfilePage() {
+  const { t } = useTranslation();
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Profil Saya</h1>
+      <h1 className="text-2xl font-bold">{t('profile_page_title')}</h1>
       <Card>
         <CardContent className="pt-6">
           <div className="flex flex-col items-center space-y-4">
             <div className="relative">
               <Avatar className="h-24 w-24">
-                <AvatarImage src="https://picsum.photos/seed/10/200/200" alt="User Avatar" data-ai-hint="person avatar" />
+                <AvatarImage src="https://picsum.photos/seed/10/200/200" alt={t('profile_avatar_alt')} data-ai-hint="person avatar" />
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>
               <Button variant="ghost" size="icon" className="absolute bottom-0 right-0 rounded-full bg-background">
                 <Camera className="h-5 w-5" />
-                <span className="sr-only">Ubah Foto Profil</span>
+                <span className="sr-only">{t('profile_change_photo')}</span>
               </Button>
             </div>
             <div className="text-center">
@@ -35,43 +37,45 @@ export default function ProfilePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Informasi Pribadi</CardTitle>
-          <CardDescription>Perbarui informasi akun Anda.</CardDescription>
+          <CardTitle>{t('profile_personal_info_title')}</CardTitle>
+          <CardDescription>{t('profile_personal_info_desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Nama Lengkap</Label>
+            <Label htmlFor="name">{t('profile_name_label')}</Label>
             <Input id="name" defaultValue="Pengguna" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Alamat Email</Label>
+            <Label htmlFor="email">{t('profile_email_label')}</Label>
             <Input id="email" type="email" defaultValue="pengguna@contoh.com" disabled />
           </div>
         </CardContent>
         <CardFooter>
-          <Button>Simpan Perubahan</Button>
+          <Button>{t('profile_save_button')}</Button>
         </CardFooter>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Keamanan</CardTitle>
-          <CardDescription>Ubah kata sandi Anda.</CardDescription>
+          <CardTitle>{t('profile_security_title')}</CardTitle>
+          <CardDescription>{t('profile_security_desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="current-password">Kata Sandi Saat Ini</Label>
+            <Label htmlFor="current-password">{t('profile_current_password_label')}</Label>
             <Input id="current-password" type="password" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="new-password">Kata Sandi Baru</Label>
+            <Label htmlFor="new-password">{t('profile_new_password_label')}</Label>
             <Input id="new-password" type="password" />
           </div>
         </CardContent>
         <CardFooter>
-          <Button>Ubah Kata Sandi</Button>
+          <Button>{t('profile_change_password_button')}</Button>
         </CardFooter>
       </Card>
     </div>
   );
 }
+
+    

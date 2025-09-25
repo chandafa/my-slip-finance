@@ -25,9 +25,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { AddTransactionDialog } from '@/components/dashboard/AddTransactionDialog';
 import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
+import { id, enUS } from 'date-fns/locale';
 import { CATEGORIES } from "@/lib/data";
 import { deleteTransaction, updateTransaction } from '@/lib/actions';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function TransactionDetailPage() {
   const { user } = useAuth();
@@ -35,6 +36,7 @@ export default function TransactionDetailPage() {
   const params = useParams();
   const transactionId = params.id as string;
   const { toast } = useToast();
+  const { t, language } = useTranslation();
 
   const [transaction, setTransaction] = useState<Transaction | null>(null);
   const [loading, setLoading] = useState(true);
@@ -99,29 +101,29 @@ export default function TransactionDetailPage() {
             <Button variant="outline" size="icon" onClick={() => router.back()}>
                 <ArrowLeft />
             </Button>
-            <h1 className="text-2xl font-bold">Detail Transaksi</h1>
+            <h1 className="text-2xl font-bold">{t('tx_detail_page_title')}</h1>
         </div>
         <div className="flex gap-2">
            <AddTransactionDialog 
               transactionToEdit={transaction}
               trigger={
-                <Button variant="outline" size="icon"><Pencil className="h-4 w-4"/></Button>
+                <Button variant="outline" size="icon" aria-label={t('tx_detail_edit_button')}><Pencil className="h-4 w-4"/></Button>
               }
             />
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="icon"><Trash2 className="h-4 w-4"/></Button>
+                <Button variant="destructive" size="icon" aria-label={t('tx_detail_delete_button')}><Trash2 className="h-4 w-4"/></Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Anda yakin?</AlertDialogTitle>
+                  <AlertDialogTitle>{t('tx_detail_delete_confirm_title')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Tindakan ini tidak dapat diurungkan. Ini akan menghapus transaksi secara permanen.
+                    {t('tx_detail_delete_confirm_desc')}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Batal</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">Hapus</AlertDialogAction>
+                  <AlertDialogCancel>{t('tx_detail_cancel_button')}</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">{t('tx_detail_delete_confirm_button')}</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -134,7 +136,7 @@ export default function TransactionDetailPage() {
                 {isIncome ? '+' : '-'} {formatCurrency(transaction.amount)}
             </p>
             <CardTitle className="text-2xl">{transaction.title}</CardTitle>
-            <CardDescription>{format(date, 'eeee, dd MMMM yyyy, HH:mm', { locale: id })}</CardDescription>
+            <CardDescription>{format(date, 'eeee, dd MMMM yyyy, HH:mm', { locale: language === 'id' ? id : enUS })}</CardDescription>
         </CardHeader>
         <CardContent className="p-6 grid gap-4">
              <div className="flex items-center gap-4">
@@ -142,8 +144,8 @@ export default function TransactionDetailPage() {
                     <Wallet className="h-5 w-5 text-muted-foreground"/>
                 </div>
                 <div>
-                    <p className="text-sm text-muted-foreground">Tipe Transaksi</p>
-                    <p className="font-medium">{isIncome ? 'Pemasukan' : 'Pengeluaran'}</p>
+                    <p className="text-sm text-muted-foreground">{t('tx_detail_type')}</p>
+                    <p className="font-medium">{isIncome ? t('add_tx_dialog_type_income') : t('add_tx_dialog_type_expense')}</p>
                 </div>
             </div>
              <div className="flex items-center gap-4">
@@ -151,7 +153,7 @@ export default function TransactionDetailPage() {
                     <Tag className="h-5 w-5 text-muted-foreground"/>
                 </div>
                 <div>
-                    <p className="text-sm text-muted-foreground">Kategori</p>
+                    <p className="text-sm text-muted-foreground">{t('tx_detail_category')}</p>
                     <p className="font-medium">{transaction.category}</p>
                 </div>
             </div>
@@ -161,7 +163,7 @@ export default function TransactionDetailPage() {
                         <FileText className="h-5 w-5 text-muted-foreground"/>
                     </div>
                     <div>
-                        <p className="text-sm text-muted-foreground">Catatan</p>
+                        <p className="text-sm text-muted-foreground">{t('tx_detail_notes')}</p>
                         <p className="font-medium whitespace-pre-wrap">{transaction.notes}</p>
                     </div>
                 </div>
@@ -171,3 +173,5 @@ export default function TransactionDetailPage() {
     </div>
   );
 }
+
+    

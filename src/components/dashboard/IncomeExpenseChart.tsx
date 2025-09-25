@@ -16,6 +16,7 @@ import { useAuth } from "@/lib/auth";
 import { db } from "@/lib/firebase";
 import { collection, query, where, getDocs, Timestamp } from "firebase/firestore";
 import type { Transaction } from "@/lib/types";
+import { useTranslation } from "@/hooks/use-translation";
 
 const chartConfig = {
   income: {
@@ -30,6 +31,7 @@ const chartConfig = {
 
 export function IncomeExpenseChart() {
   const { user } = useAuth();
+  const { t, language } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState([{
       month: 'This Month',
@@ -66,8 +68,9 @@ export function IncomeExpenseChart() {
                 }
             });
 
+            const locale = language === 'id' ? 'id-ID' : 'en-US';
             setChartData([{
-                month: now.toLocaleString('id-ID', { month: 'long' }),
+                month: now.toLocaleString(locale, { month: 'long' }),
                 income: totalIncome,
                 expense: totalExpense
             }]);
@@ -80,17 +83,17 @@ export function IncomeExpenseChart() {
     };
     
     fetchMonthlyData();
-}, [user]);
+}, [user, language]);
 
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Pemasukan vs Pengeluaran Bulan Ini</CardTitle>
+        <CardTitle>{t('chart_monthly_title')}</CardTitle>
       </CardHeader>
       <CardContent>
         {loading ? (
             <div className="h-[200px] w-full flex items-center justify-center">
-                <p className="text-muted-foreground">Memuat data...</p>
+                <p className="text-muted-foreground">{t('chart_loading')}</p>
             </div>
         ) : (
             <ChartContainer config={chartConfig} className="h-[200px] w-full">
@@ -112,3 +115,5 @@ export function IncomeExpenseChart() {
     </Card>
   )
 }
+
+    

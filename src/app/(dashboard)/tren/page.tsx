@@ -16,6 +16,7 @@ import { useAuth } from '@/lib/auth';
 import { collection, query, where, getDocs, Timestamp, orderBy, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { Transaction } from '@/lib/types';
+import { useTranslation } from '@/hooks/use-translation';
 
 
 async function getTransactions(userId: string): Promise<Transaction[]> {
@@ -36,15 +37,16 @@ async function getTransactions(userId: string): Promise<Transaction[]> {
 
 const COLORS = ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))"];
 
-const lineChartConfig = {
-  income: { label: "Pemasukan", color: "hsl(var(--color-income))" },
-  expense: { label: "Pengeluaran", color: "hsl(var(--color-expense))" },
-} satisfies ChartConfig;
-
 export default function TrenPage() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const lineChartConfig = {
+    income: { label: t('stat_card_income'), color: "hsl(var(--color-income))" },
+    expense: { label: t('stat_card_expense'), color: "hsl(var(--color-expense))" },
+  } satisfies ChartConfig;
 
   useEffect(() => {
     if (user) {
@@ -66,11 +68,11 @@ export default function TrenPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Tren Keuangan</h1>
+      <h1 className="text-2xl font-bold">{t('trend_page_title')}</h1>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card className="md:col-span-2 lg:col-span-4">
           <CardHeader>
-            <CardTitle>Tren Pemasukan & Pengeluaran (6 Bulan Terakhir)</CardTitle>
+            <CardTitle>{t('trend_monthly_title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer config={lineChartConfig} className="h-[300px] w-full">
@@ -94,10 +96,10 @@ export default function TrenPage() {
         
         <Card className="md:col-span-1 lg:col-span-2">
           <CardHeader>
-            <CardTitle>Distribusi Pengeluaran</CardTitle>
+            <CardTitle>{t('trend_distribution_title')}</CardTitle>
           </CardHeader>
           <CardContent>
-             {loading ? <p>Memuat data...</p> : pieChartData.length > 0 ? (
+             {loading ? <p>{t('chart_loading')}</p> : pieChartData.length > 0 ? (
               <ChartContainer config={{}} className="h-[300px] w-full">
                 <PieChart>
                   <ChartTooltip content={<ChartTooltipContent nameKey="name" hideLabel />} />
@@ -108,15 +110,15 @@ export default function TrenPage() {
                   </Pie>
                 </PieChart>
               </ChartContainer>
-             ) : <p className="text-center text-muted-foreground">Belum ada data pengeluaran.</p>}
+             ) : <p className="text-center text-muted-foreground">{t('trend_no_expense_data')}</p>}
           </CardContent>
         </Card>
         <Card className="md:col-span-1 lg:col-span-2">
           <CardHeader>
-            <CardTitle>Top Kategori Pengeluaran</CardTitle>
+            <CardTitle>{t('trend_top_categories_title')}</CardTitle>
           </CardHeader>
           <CardContent>
-             {loading ? <p>Memuat data...</p> : Object.keys(categoryTotals).length > 0 ? (
+             {loading ? <p>{t('chart_loading')}</p> : Object.keys(categoryTotals).length > 0 ? (
                 <div className="space-y-4">
                   {Object.entries(categoryTotals)
                     .sort(([, a], [, b]) => b - a)
@@ -127,10 +129,12 @@ export default function TrenPage() {
                     </div>
                   ))}
                 </div>
-             ) : <p className="text-center text-muted-foreground">Belum ada data pengeluaran.</p>}
+             ) : <p className="text-center text-muted-foreground">{t('trend_no_expense_data')}</p>}
           </CardContent>
         </Card>
       </div>
     </div>
   );
 }
+
+    

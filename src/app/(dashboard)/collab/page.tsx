@@ -23,9 +23,11 @@ import { collection, addDoc, query, where, onSnapshot, serverTimestamp, arrayUni
 import type { Wallet } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { formatCurrency } from '@/lib/utils';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function CollabPage() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [open, setOpen] = useState(false);
@@ -93,26 +95,26 @@ export default function CollabPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Dompet Kolaborasi</h1>
+        <h1 className="text-2xl font-bold">{t('collab_page_title')}</h1>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
-              <Plus className="mr-2"/> Buat Dompet Baru
+              <Plus className="mr-2"/> {t('collab_create_button')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Buat Dompet Kolaborasi Baru</DialogTitle>
+              <DialogTitle>{t('collab_dialog_title')}</DialogTitle>
               <DialogDescription>
-                Isi nama untuk dompet bersama Anda. Anda akan otomatis menjadi pemilik.
+                {t('collab_dialog_desc')}
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="wallet-name">Nama Dompet</Label>
+                <Label htmlFor="wallet-name">{t('collab_dialog_name_label')}</Label>
                 <Input 
                   id="wallet-name" 
-                  placeholder="cth. Dana Liburan Bali"
+                  placeholder={t('collab_dialog_name_placeholder')}
                   value={newWalletName}
                   onChange={(e) => setNewWalletName(e.target.value)}
                 />
@@ -121,7 +123,7 @@ export default function CollabPage() {
             <DialogFooter>
               <Button onClick={handleCreateWallet} disabled={creating}>
                 {creating && <Loader2 className="animate-spin mr-2" />}
-                Buat Dompet
+                {t('collab_dialog_create_button')}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -140,7 +142,7 @@ export default function CollabPage() {
                 <CardHeader>
                   <CardTitle>{wallet.name}</CardTitle>
                   <CardDescription className="flex items-center gap-2 pt-1">
-                    <Users className="h-4 w-4" /> {wallet.members.length} Anggota
+                    <Users className="h-4 w-4" /> {wallet.members.length} {t('collab_card_members')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
@@ -154,8 +156,8 @@ export default function CollabPage() {
         </div>
       ) : (
          <div className="text-center py-16 border-2 border-dashed rounded-lg">
-            <p className="text-muted-foreground">Anda belum bergabung dengan dompet kolaborasi manapun.</p>
-            <p className="text-muted-foreground">Buat dompet baru atau gabung lewat tautan undangan!</p>
+            <p className="text-muted-foreground">{t('collab_empty_state')}</p>
+            <p className="text-muted-foreground">{t('collab_empty_state_hint')}</p>
         </div>
       )}
     </div>

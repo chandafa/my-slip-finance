@@ -11,11 +11,13 @@ import { useAuth } from '@/lib/auth';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { Transaction } from '@/lib/types';
+import { useTranslation } from '@/hooks/use-translation';
 
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react"
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   
   useEffect(() => {
@@ -51,8 +53,8 @@ export default function DashboardPage() {
           <BalanceCard balance={balance} />
         </div>
         <div className="col-span-1 grid grid-cols-2 gap-6 md:col-span-2 lg:col-span-2">
-            <StatCard title="Pemasukan" value={totalIncome} type="income" icon={<ArrowUpRight className="h-5 w-5" />} />
-            <StatCard title="Pengeluaran" value={totalExpense} type="expense" icon={<ArrowDownLeft className="h-5 w-5" />} />
+            <StatCard title={t('stat_card_income')} value={totalIncome} type="income" icon={<ArrowUpRight className="h-5 w-5" />} />
+            <StatCard title={t('stat_card_expense')} value={totalExpense} type="expense" icon={<ArrowDownLeft className="h-5 w-5" />} />
         </div>
         <div className="lg:col-span-2 md:col-span-2">
           <TransactionList />
@@ -64,3 +66,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    

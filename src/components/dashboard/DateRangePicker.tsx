@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { format } from "date-fns"
-import { id } from "date-fns/locale"
+import { id, enUS } from "date-fns/locale"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { DateRange } from "react-day-picker"
 
@@ -15,6 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useTranslation } from "@/hooks/use-translation"
 
 interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
   onDateChange: (dateRange: DateRange | undefined) => void;
@@ -22,6 +23,8 @@ interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function DateRangePicker({ className, onDateChange }: DateRangePickerProps) {
   const [date, setDate] = React.useState<DateRange | undefined>()
+  const { t, language } = useTranslation();
+  const locale = language === 'id' ? id : enUS;
 
   React.useEffect(() => {
     onDateChange(date);
@@ -43,14 +46,14 @@ export function DateRangePicker({ className, onDateChange }: DateRangePickerProp
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y", { locale: id })} -{" "}
-                  {format(date.to, "LLL dd, y", { locale: id })}
+                  {format(date.from, "LLL dd, y", { locale })} -{" "}
+                  {format(date.to, "LLL dd, y", { locale })}
                 </>
               ) : (
-                format(date.from, "LLL dd, y", { locale: id })
+                format(date.from, "LLL dd, y", { locale })
               )
             ) : (
-              <span>Pilih rentang tanggal</span>
+              <span>{t('date_picker_placeholder')}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -62,10 +65,12 @@ export function DateRangePicker({ className, onDateChange }: DateRangePickerProp
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}
-            locale={id}
+            locale={locale}
           />
         </PopoverContent>
       </Popover>
     </div>
   )
 }
+
+    

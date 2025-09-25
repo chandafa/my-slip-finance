@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email({ message: "Alamat email tidak valid." }),
@@ -24,6 +25,7 @@ type FormValues = z.infer<typeof forgotPasswordSchema>;
 
 export function ForgotPasswordForm() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { toast } = useToast();
   const { sendPasswordReset } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -55,11 +57,11 @@ export function ForgotPasswordForm() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Lupa Kata Sandi</CardTitle>
+          <CardTitle>{t('forgot_password_title')}</CardTitle>
           <CardDescription>
             {isSent 
-                ? "Tautan pengaturan ulang telah dikirim ke email Anda. Silakan periksa kotak masuk."
-                : "Masukkan email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda."
+                ? t('forgot_password_sent')
+                : t('forgot_password_desc')
             }
           </CardDescription>
         </CardHeader>
@@ -67,23 +69,25 @@ export function ForgotPasswordForm() {
             <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('auth_email_label')}</Label>
                 <Input id="email" type="email" {...register("email")} placeholder="nama@contoh.com" />
                 {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Kirim Tautan
+                {t('forgot_password_button')}
                 </Button>
             </form>
             </CardContent>
         )}
         <CardFooter className="justify-center">
             <Link href="/login" className="text-sm text-primary hover:underline">
-              Kembali ke Halaman Login
+              {t('forgot_password_back_to_login')}
             </Link>
         </CardFooter>
       </Card>
     </div>
   );
 }
+
+    

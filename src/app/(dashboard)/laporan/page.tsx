@@ -21,6 +21,7 @@ import { format } from "date-fns";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
+import { useTranslation } from '@/hooks/use-translation';
 
 async function getTransactionsForRange(userId: string, dateRange?: DateRange): Promise<Transaction[]> {
   if (!userId) return [];
@@ -57,6 +58,7 @@ async function getTransactionsForRange(userId: string, dateRange?: DateRange): P
 export default function LaporanPage() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     to: new Date()
@@ -176,14 +178,14 @@ export default function LaporanPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold">Laporan Keuangan</h1>
+        <h1 className="text-2xl font-bold">{t('report_page_title')}</h1>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
           <DateRangePicker onDateChange={setDateRange} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-full sm:w-auto" disabled={exporting}>
                 {exporting ? <Loader2 className="mr-2 animate-spin" /> : <Download className="mr-2" />}
-                Ekspor
+                {t('report_export_button')}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -201,10 +203,10 @@ export default function LaporanPage() {
       
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <StatCard title="Total Pemasukan" value={totalIncome} type="income" icon={<ArrowUpRight />} />
-          <StatCard title="Total Pengeluaran" value={totalExpense} type="expense" icon={<ArrowDownLeft />} />
+          <StatCard title={t('stat_card_income')} value={totalIncome} type="income" icon={<ArrowUpRight />} />
+          <StatCard title={t('stat_card_expense')} value={totalExpense} type="expense" icon={<ArrowDownLeft />} />
           <StatCard 
-            title="Hasil Bersih" 
+            title={t('report_stat_net')} 
             value={netValue} 
             type={netValue >= 0 ? 'income' : 'expense'} 
             icon={netValue >= 0 ? <ArrowUpRight /> : <ArrowDownLeft />} 
@@ -213,16 +215,16 @@ export default function LaporanPage() {
 
         <Card className="lg:col-span-3 md:col-span-2">
           <CardHeader>
-            <CardTitle>Rincian per Kategori</CardTitle>
+            <CardTitle>{t('report_category_breakdown')}</CardTitle>
           </CardHeader>
           <CardContent>
-             {loading ? <p>Memuat data...</p> : (
+             {loading ? <p>{t('chart_loading')}</p> : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Kategori</TableHead>
-                    <TableHead className="text-right">Jumlah</TableHead>
-                    <TableHead className="text-right hidden sm:table-cell">Persentase</TableHead>
+                    <TableHead>{t('report_table_category')}</TableHead>
+                    <TableHead className="text-right">{t('report_table_amount')}</TableHead>
+                    <TableHead className="text-right hidden sm:table-cell">{t('report_table_percentage')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -236,7 +238,7 @@ export default function LaporanPage() {
                     </TableRow>
                   )) : (
                     <TableRow>
-                      <TableCell colSpan={3} className="text-center">Belum ada pengeluaran.</TableCell>
+                      <TableCell colSpan={3} className="text-center">{t('report_table_no_expense')}</TableCell>
                     </TableRow>
                   )}
                 </TableBody>

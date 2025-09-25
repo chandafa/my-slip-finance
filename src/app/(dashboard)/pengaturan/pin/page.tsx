@@ -12,11 +12,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function PinSettingsPage() {
     const { isPinEnabled, enablePin, setPin } = useAuth();
     const { toast } = useToast();
     const router = useRouter();
+    const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
     const [newPin, setNewPin] = useState("");
@@ -66,7 +68,7 @@ export default function PinSettingsPage() {
                 <Button variant="outline" size="icon" onClick={() => router.back()}>
                     <ArrowLeft />
                 </Button>
-                <h1 className="text-2xl font-bold">Kunci Aplikasi (PIN)</h1>
+                <h1 className="text-2xl font-bold">{t('pin_page_title')}</h1>
             </div>
 
             <Dialog open={open} onOpenChange={(isOpen) => {
@@ -78,12 +80,12 @@ export default function PinSettingsPage() {
             }}>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Pengaturan PIN</CardTitle>
-                        <CardDescription>Amankan aplikasi Anda dengan PIN 4 digit. Anda akan diminta memasukkan PIN ini setiap kali membuka aplikasi.</CardDescription>
+                        <CardTitle>{t('pin_settings_title')}</CardTitle>
+                        <CardDescription>{t('pin_settings_desc')}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="flex items-center justify-between p-4 rounded-lg">
-                            <Label htmlFor="pin-switch" className="text-base">Aktifkan Kunci PIN</Label>
+                            <Label htmlFor="pin-switch" className="text-base">{t('pin_enable_switch')}</Label>
                             <Switch
                                 id="pin-switch"
                                 checked={isPinEnabled}
@@ -94,7 +96,7 @@ export default function PinSettingsPage() {
                     {isPinEnabled && (
                         <CardFooter>
                             <DialogTrigger asChild>
-                                <Button variant="outline">Ubah PIN</Button>
+                                <Button variant="outline">{t('pin_change_button')}</Button>
                             </DialogTrigger>
                         </CardFooter>
                     )}
@@ -102,12 +104,12 @@ export default function PinSettingsPage() {
 
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{isPinEnabled ? "Ubah PIN Anda" : "Atur PIN Baru"}</DialogTitle>
-                        <DialogDescription>Masukkan PIN 4 digit yang aman dan mudah Anda ingat.</DialogDescription>
+                        <DialogTitle>{isPinEnabled ? t('pin_dialog_change_title') : t('pin_dialog_set_title')}</DialogTitle>
+                        <DialogDescription>{t('pin_dialog_desc')}</DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
                         <div className="space-y-2">
-                            <Label htmlFor="new-pin">PIN Baru (4 digit)</Label>
+                            <Label htmlFor="new-pin">{t('pin_dialog_new_label')}</Label>
                             <Input
                                 id="new-pin"
                                 type="password"
@@ -117,7 +119,7 @@ export default function PinSettingsPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="confirm-pin">Konfirmasi PIN Baru</Label>
+                            <Label htmlFor="confirm-pin">{t('pin_dialog_confirm_label')}</Label>
                             <Input
                                 id="confirm-pin"
                                 type="password"
@@ -128,10 +130,12 @@ export default function PinSettingsPage() {
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button onClick={handleSetPin}>Simpan PIN</Button>
+                        <Button onClick={handleSetPin}>{t('pin_dialog_save_button')}</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
         </div>
     );
 }
+
+    

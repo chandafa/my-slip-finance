@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Loader2, Users } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 
 function JoinWalletContent() {
     const { user, loading: authLoading } = useAuth();
@@ -19,6 +20,7 @@ function JoinWalletContent() {
     const searchParams = useSearchParams();
     const walletId = searchParams.get('id');
     const { toast } = useToast();
+    const { t } = useTranslation();
 
     const [wallet, setWallet] = useState<Wallet | null>(null);
     const [loading, setLoading] = useState(true);
@@ -96,7 +98,7 @@ function JoinWalletContent() {
         return (
             <div className="flex h-full w-full items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin" />
-                <p className="ml-4">Memuat data...</p>
+                <p className="ml-4">{t('collab_join_loading')}</p>
             </div>
         );
     }
@@ -106,7 +108,7 @@ function JoinWalletContent() {
     }
     
     if (!wallet) {
-         return <div className="text-center text-muted-foreground">Tidak ada informasi dompet untuk ditampilkan.</div>;
+         return <div className="text-center text-muted-foreground">{t('collab_join_no_info')}</div>;
     }
     
     const owner = wallet.members.find(m => m.uid === wallet.ownerId);
@@ -114,35 +116,35 @@ function JoinWalletContent() {
     return (
         <Card className="w-full max-w-md">
             <CardHeader>
-                <CardTitle className="text-center">Gabung ke Dompet Kolaborasi</CardTitle>
-                <CardDescription className="text-center">Anda diundang untuk bergabung dengan dompet berikut:</CardDescription>
+                <CardTitle className="text-center">{t('collab_join_title')}</CardTitle>
+                <CardDescription className="text-center">{t('collab_join_desc')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
                 <div className="p-4 border rounded-lg bg-muted/30">
                     <h3 className="text-2xl font-bold text-center">{wallet.name}</h3>
                 </div>
                  <div className="text-center space-y-2">
-                    <p className="text-sm text-muted-foreground">Pemilik Dompet</p>
+                    <p className="text-sm text-muted-foreground">{t('collab_join_owner')}</p>
                      <div className="flex items-center justify-center gap-3">
                         <Avatar className="h-8 w-8">
                             <AvatarImage src={owner?.photoURL || `https://i.pravatar.cc/150?u=${owner?.uid}`} />
                             <AvatarFallback>{owner?.name ? owner.name.charAt(0).toUpperCase() : '?'}</AvatarFallback>
                         </Avatar>
                         <div>
-                            <p className="font-medium text-sm">{owner?.name || 'Tidak diketahui'}</p>
+                            <p className="font-medium text-sm">{owner?.name || t('collab_join_unknown_owner')}</p>
                             <p className="text-xs text-muted-foreground">{owner?.email}</p>
                         </div>
                     </div>
                 </div>
                  <div className="flex items-center justify-center gap-2 text-muted-foreground">
                     <Users className="h-4 w-4" />
-                    <span>Total {wallet.members.length} Anggota</span>
+                    <span>{wallet.members.length} {t('collab_join_total_members')}</span>
                 </div>
             </CardContent>
             <CardFooter>
                 <Button className="w-full" onClick={handleJoinWallet} disabled={joining}>
                     {joining && <Loader2 className="mr-2 animate-spin" />}
-                    Gabung Sekarang
+                    {t('collab_join_button')}
                 </Button>
             </CardFooter>
         </Card>
@@ -159,6 +161,5 @@ export default function JoinPage() {
         </div>
     );
 }
-
 
     

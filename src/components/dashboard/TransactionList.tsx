@@ -6,15 +6,17 @@ import type { Transaction } from "@/lib/types"
 import { formatCurrency } from "@/lib/utils"
 import { cn } from "@/lib/utils"
 import { format } from 'date-fns'
-import { id } from 'date-fns/locale'
+import { id, enUS } from 'date-fns/locale'
 import { auth, db } from "@/lib/firebase"
 import { collection, query, where, orderBy, limit, getDocs, Timestamp, onSnapshot } from "firebase/firestore"
 import { CATEGORIES } from "@/lib/data"
 import { onAuthStateChanged } from "firebase/auth"
 import React from "react"
 import Link from "next/link";
+import { useTranslation } from "@/hooks/use-translation";
 
 function TransactionItem({ transaction }: { transaction: Transaction }) {
+  const { language } = useTranslation();
   const isIncome = transaction.type === 'income';
   const amountColor = isIncome ? 'text-green-600' : 'text-red-600';
   const amountSign = isIncome ? '+' : '-';
@@ -35,7 +37,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
         <div className="flex-1 min-w-0">
             <p className="font-bold truncate">{transaction.title}</p>
             <p className="text-sm text-muted-foreground">
-            {format(date, "MMM dd", { locale: id })}
+            {format(date, "MMM dd", { locale: language === 'id' ? id : enUS })}
             </p>
         </div>
         <p className={cn("font-semibold whitespace-nowrap shrink-0", amountColor)}>
@@ -47,6 +49,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
 }
 
 export function TransactionList() {
+    const { t } = useTranslation();
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
     const [loading, setLoading] = React.useState(true);
 
@@ -83,10 +86,10 @@ export function TransactionList() {
         return (
              <Card className="w-full">
                 <CardHeader>
-                    <CardTitle>Aktivitas Terbaru</CardTitle>
+                    <CardTitle>{t('tx_list_title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                    <p>Memuat data...</p>
+                    <p>{t('tx_list_loading')}</p>
                 </CardContent>
             </Card>
         )
@@ -95,17 +98,19 @@ export function TransactionList() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Aktivitas Terbaru</CardTitle>
+        <CardTitle>{t('tx_list_title')}</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         <div className="divide-y divide-border">
           {transactions.length > 0 ? transactions.map((tx) => (
             <TransactionItem transaction={tx} key={tx.id} />
           )) : (
-            <p className="p-6 text-muted-foreground">Belum ada transaksi.</p>
+            <p className="p-6 text-muted-foreground">{t('tx_list_empty')}</p>
           )}
         </div>
       </CardContent>
     </Card>
   )
 }
+
+    

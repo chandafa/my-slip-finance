@@ -8,11 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Lock, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/use-translation";
 
 export function PinLockScreen() {
     const [pin, setPin] = useState("");
     const { unlockWithPin } = useAuth();
     const { toast } = useToast();
+    const { t } = useTranslation();
 
     const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -51,11 +53,11 @@ export function PinLockScreen() {
             <div className="text-center mb-8">
                  <Wallet className="h-12 w-12 text-primary mx-auto mb-4" />
                  <h1 className="text-2xl font-bold">MySlip</h1>
-                 <p className="text-muted-foreground">Aplikasi terkunci. Masukkan PIN Anda.</p>
+                 <p className="text-muted-foreground">{t('pin_lock_welcome')}</p>
             </div>
             <Card className="w-full max-w-sm">
                 <CardHeader>
-                    <CardTitle className="text-center">Masukkan PIN</CardTitle>
+                    <CardTitle className="text-center">{t('pin_lock_enter_pin')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit}>
@@ -71,7 +73,7 @@ export function PinLockScreen() {
                             />
                         </div>
                         <Button type="submit" className="w-full mt-6">
-                            <Lock className="mr-2" /> Buka Kunci
+                            <Lock className="mr-2" /> {t('pin_lock_unlock_button')}
                         </Button>
                     </form>
                 </CardContent>
@@ -79,3 +81,5 @@ export function PinLockScreen() {
         </div>
     );
 }
+
+    

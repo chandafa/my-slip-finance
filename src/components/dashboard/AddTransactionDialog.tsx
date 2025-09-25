@@ -30,6 +30,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Plus, Loader2 } from "lucide-react"
 import { useAuth } from "@/lib/auth"
+import { useTranslation } from "@/hooks/use-translation"
 
 interface AddTransactionDialogProps {
   transactionToEdit?: Transaction | null;
@@ -40,6 +41,7 @@ export function AddTransactionDialog({ transactionToEdit, trigger }: AddTransact
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
   const { user } = useAuth()
+  const { t } = useTranslation()
   
   const isEditMode = !!transactionToEdit;
 
@@ -119,67 +121,67 @@ export function AddTransactionDialog({ transactionToEdit, trigger }: AddTransact
       </DialogTrigger>
       <DialogContent className="w-[90vw] max-w-[425px] rounded-2xl">
         <DialogHeader>
-          <DialogTitle>{isEditMode ? 'Edit Transaksi' : 'Tambah Transaksi'}</DialogTitle>
+          <DialogTitle>{isEditMode ? t('add_tx_dialog_edit_title') : t('add_tx_dialog_title')}</DialogTitle>
           <DialogDescription>
-            {isEditMode ? 'Perbarui detail transaksi Anda.' : 'Isi detail transaksi baru Anda. Klik simpan jika sudah selesai.'}
+            {isEditMode ? t('add_tx_dialog_edit_desc') : t('add_tx_dialog_desc')}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
             <div>
-              <Label htmlFor="title">Judul</Label>
-              <Input id="title" {...register("title")} placeholder="cth. Makan Siang" />
+              <Label htmlFor="title">{t('add_tx_dialog_title_label')}</Label>
+              <Input id="title" {...register("title")} placeholder={t('add_tx_dialog_title_placeholder')} />
               {errors?.title && <p className="text-sm text-destructive mt-1">{errors.title.message}</p>}
             </div>
 
             <div>
-              <Label htmlFor="amount">Jumlah</Label>
-              <Input id="amount" type="number" {...register("amount")} placeholder="cth. 50000" />
+              <Label htmlFor="amount">{t('add_tx_dialog_amount_label')}</Label>
+              <Input id="amount" type="number" {...register("amount")} placeholder={t('add_tx_dialog_amount_placeholder')} />
                {errors?.amount && <p className="text-sm text-destructive mt-1">{errors.amount.message}</p>}
             </div>
 
             <div>
-              <Label htmlFor="type">Tipe</Label>
+              <Label htmlFor="type">{t('add_tx_dialog_type_label')}</Label>
               <Select name="type" value={currentType} onValueChange={(value) => setValue("type", value as "income" | "expense")}>
                 <SelectTrigger id="type">
-                  <SelectValue placeholder="Pilih tipe transaksi" />
+                  <SelectValue placeholder={t('add_tx_dialog_type_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="expense">Pengeluaran</SelectItem>
-                  <SelectItem value="income">Pemasukan</SelectItem>
+                  <SelectItem value="expense">{t('add_tx_dialog_type_expense')}</SelectItem>
+                  <SelectItem value="income">{t('add_tx_dialog_type_income')}</SelectItem>
                 </SelectContent>
               </Select>
                {errors?.type && <p className="text-sm text-destructive mt-1">{errors.type.message}</p>}
             </div>
 
              <div>
-              <Label htmlFor="category">Kategori</Label>
+              <Label htmlFor="category">{t('add_tx_dialog_category_label')}</Label>
               <Select name="category" value={watch("category")} onValueChange={(value) => setValue("category", value)}>
                 <SelectTrigger id="category">
-                  <SelectValue placeholder="Pilih kategori" />
+                  <SelectValue placeholder={t('add_tx_dialog_category_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Makanan">Makanan</SelectItem>
-                  <SelectItem value="Transportasi">Transportasi</SelectItem>
-                  <SelectItem value="Gaji">Gaji</SelectItem>
-                  <SelectItem value="Tempat Tinggal">Tempat Tinggal</SelectItem>
-                  <SelectItem value="Belanja">Belanja</SelectItem>
-                  <SelectItem value="Hadiah">Hadiah</SelectItem>
-                  <SelectItem value="Lainnya">Lainnya</SelectItem>
+                  <SelectItem value="Makanan">{t('add_tx_dialog_category_food')}</SelectItem>
+                  <SelectItem value="Transportasi">{t('add_tx_dialog_category_transport')}</SelectItem>
+                  <SelectItem value="Gaji">{t('add_tx_dialog_category_salary')}</SelectItem>
+                  <SelectItem value="Tempat Tinggal">{t('add_tx_dialog_category_housing')}</SelectItem>
+                  <SelectItem value="Belanja">{t('add_tx_dialog_category_shopping')}</SelectItem>
+                  <SelectItem value="Hadiah">{t('add_tx_dialog_category_gifts')}</SelectItem>
+                  <SelectItem value="Lainnya">{t('add_tx_dialog_category_other')}</SelectItem>
                 </SelectContent>
               </Select>
                {errors?.category && <p className="text-sm text-destructive mt-1">{errors.category.message}</p>}
             </div>
 
             <div>
-              <Label htmlFor="notes">Catatan</Label>
-              <Textarea id="notes" {...register("notes")} placeholder="Catatan tambahan (opsional)" />
+              <Label htmlFor="notes">{t('add_tx_dialog_notes_label')}</Label>
+              <Textarea id="notes" {...register("notes")} placeholder={t('add_tx_dialog_notes_placeholder')} />
               {errors?.notes && <p className="text-sm text-destructive mt-1">{errors.notes.message}</p>}
             </div>
           
             <DialogFooter className="pt-4">
                <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Simpan {isEditMode ? 'Perubahan' : 'Transaksi'}
+                {isEditMode ? t('add_tx_dialog_save_edit_button') : t('add_tx_dialog_save_button')}
               </Button>
             </DialogFooter>
         </form>
@@ -187,3 +189,5 @@ export function AddTransactionDialog({ transactionToEdit, trigger }: AddTransact
     </Dialog>
   )
 }
+
+    

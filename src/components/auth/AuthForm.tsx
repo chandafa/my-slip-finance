@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { useTranslation } from "@/hooks/use-translation";
 
 
 const loginSchema = z.object({
@@ -41,6 +42,7 @@ type AuthFormProps = {
 
 export function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
+  const { t } = useTranslation();
   const { toast } = useToast();
   const { loginWithGoogle, loginWithGitHub, loginWithEmail, registerWithEmail } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -110,25 +112,25 @@ export function AuthForm({ mode }: AuthFormProps) {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>{mode === "login" ? "Selamat Datang Kembali" : "Buat Akun Baru"}</CardTitle>
+          <CardTitle>{mode === "login" ? t('auth_welcome_back') : t('auth_create_account')}</CardTitle>
           <CardDescription>
-            {mode === "login" ? "Masuk ke akun Anda untuk melanjutkan." : "Isi form di bawah untuk mendaftar."}
+            {mode === "login" ? t('auth_login_desc') : t('auth_register_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('auth_email_label')}</Label>
               <Input id="email" type="email" {...register("email")} placeholder="nama@contoh.com" />
               {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
             <div className="space-y-2">
                <div className="flex items-center justify-between">
-                <Label htmlFor="password">Kata Sandi</Label>
+                <Label htmlFor="password">{t('auth_password_label')}</Label>
                 {mode === "login" && (
                     <Link href="/forgot-password" passHref>
                         <span className="text-sm text-primary hover:underline cursor-pointer">
-                            Lupa kata sandi?
+                            {t('auth_forgot_password')}
                         </span>
                     </Link>
                 )}
@@ -138,37 +140,37 @@ export function AuthForm({ mode }: AuthFormProps) {
             </div>
              {mode === "register" && (
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Konfirmasi Kata Sandi</Label>
+                <Label htmlFor="confirmPassword">{t('auth_confirm_password_label')}</Label>
                 <Input id="confirmPassword" type="password" {...register("confirmPassword")} placeholder="******"/>
                 {errors.confirmPassword && <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>}
               </div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {mode === "login" ? "Masuk" : "Daftar"}
+              {mode === "login" ? t('auth_login_button') : t('auth_register_button')}
             </Button>
           </form>
           <div className="my-4 flex items-center">
             <Separator className="flex-1" />
-            <span className="mx-4 text-xs text-muted-foreground">ATAU</span>
+            <span className="mx-4 text-xs text-muted-foreground">{t('auth_or')}</span>
             <Separator className="flex-1" />
           </div>
           <div className="space-y-2">
             <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isGoogleLoading || isGitHubLoading}>
               {isGoogleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FcGoogle className="mr-2 h-5 w-5" />}
-              Lanjutkan dengan Google
+              {t('auth_google_button')}
             </Button>
             <Button variant="outline" className="w-full" onClick={handleGitHubSignIn} disabled={isGitHubLoading || isGoogleLoading}>
               {isGitHubLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FaGithub className="mr-2 h-5 w-5" />}
-              Lanjutkan dengan GitHub
+              {t('auth_github_button')}
             </Button>
           </div>
         </CardContent>
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
-            {mode === "login" ? "Belum punya akun? " : "Sudah punya akun? "}
+            {mode === "login" ? t('auth_no_account') : t('auth_has_account')}{" "}
             <Link href={mode === "login" ? "/register" : "/login"} className="text-primary hover:underline">
-              {mode === "login" ? "Daftar di sini" : "Masuk di sini"}
+              {mode === "login" ? t('auth_register_here') : t('auth_login_here')}
             </Link>
           </p>
         </CardFooter>
@@ -176,3 +178,5 @@ export function AuthForm({ mode }: AuthFormProps) {
     </div>
   );
 }
+
+    

@@ -19,6 +19,7 @@ import { format } from "date-fns";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
+import { useTranslation } from "@/hooks/use-translation";
 
 
 async function getTransactionsForRange(userId: string, dateRange?: DateRange): Promise<Transaction[]> {
@@ -56,6 +57,7 @@ async function getTransactionsForRange(userId: string, dateRange?: DateRange): P
 
 export default function ExportPage() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [fileType, setFileType] = useState("pdf");
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [loading, setLoading] = useState(false);
@@ -184,17 +186,17 @@ export default function ExportPage() {
 
   return (
     <div className="space-y-6">
-       <h1 className="text-2xl font-bold">Ekspor Data</h1>
+       <h1 className="text-2xl font-bold">{t('export_page_title')}</h1>
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>Ekspor Data Transaksi</CardTitle>
+          <CardTitle>{t('export_card_title')}</CardTitle>
           <CardDescription>
-            Pilih format file dan rentang tanggal untuk mengekspor data transaksi Anda.
+            {t('export_card_desc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
-            <Label>Pilih Format File</Label>
+            <Label>{t('export_format_label')}</Label>
             <RadioGroup defaultValue="pdf" value={fileType} onValueChange={setFileType} className="flex flex-wrap gap-4">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="pdf" id="pdf" />
@@ -208,17 +210,19 @@ export default function ExportPage() {
             </RadioGroup>
           </div>
           <div className="space-y-4">
-            <Label>Pilih Rentang Tanggal</Label>
+            <Label>{t('export_date_range_label')}</Label>
             <DateRangePicker onDateChange={setDateRange} />
           </div>
         </CardContent>
         <CardFooter>
           <Button onClick={handleExport} className="w-full sm:w-auto" disabled={loading}>
             {loading ? <Loader2 className="mr-2 animate-spin" /> : <Download className="mr-2" />}
-            Ekspor Data
+            {t('export_button')}
           </Button>
         </CardFooter>
       </Card>
     </div>
   );
 }
+
+    

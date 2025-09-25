@@ -15,14 +15,17 @@ import { LogOut, User, Settings } from "lucide-react"
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
+import { useTranslation } from "@/hooks/use-translation"
 
 export function Header() {
   const { user, logout } = useAuth();
+  const { t, language } = useTranslation();
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
     const updateDate = () => {
-      setCurrentDate(new Date().toLocaleString('id-ID', {
+      const locale = language === 'id' ? 'id-ID' : 'en-US';
+      setCurrentDate(new Date().toLocaleString(locale, {
         weekday: 'long',
         day: 'numeric',
         month: 'long',
@@ -31,13 +34,13 @@ export function Header() {
     };
 
     updateDate();
-  }, []);
+  }, [language]);
 
 
   return (
     <header className="flex items-center justify-between p-4 md:p-6 lg:p-8">
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">MySlip</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground">{t('dashboard_title')}</h1>
          <p className="text-sm md:text-base text-muted-foreground">{currentDate}</p>
       </div>
        <DropdownMenu>
@@ -62,22 +65,24 @@ export function Header() {
           <Link href="/profil" passHref>
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              <span>Profil</span>
+              <span>{t('header_profile')}</span>
             </DropdownMenuItem>
           </Link>
           <Link href="/pengaturan" passHref>
             <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
-              <span>Pengaturan</span>
+              <span>{t('header_settings')}</span>
             </DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={logout}>
             <LogOut className="mr-2 h-4 w-4" />
-            <span>Keluar</span>
+            <span>{t('header_logout')}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
   )
 }
+
+    
