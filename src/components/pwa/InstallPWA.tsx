@@ -15,6 +15,8 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
+const PWA_PROMPT_DISMISSED_KEY = 'pwa-prompt-dismissed-timestamp';
+
 const InstallPWA = () => {
   const { t } = useTranslation();
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
@@ -23,8 +25,18 @@ const InstallPWA = () => {
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
+      
+      const lastDismissed = localStorage.getItem(PWA_PROMPT_DISMISSED_KEY);
+      const oneDay = 24 * 60 * 60 * 1000;
+      
+      // If prompt was dismissed within the last 24 hours, do not show it.
+      if (lastDismissed && (Date.now() - parseInt(lastDismissed, 10)) < oneDay) {
+        return;
+      }
+      
       // Stash the event so it can be triggered later.
       setInstallPrompt(e as BeforeInstallPromptEvent);
+      
       // Check if the app is already installed
       if (window.matchMedia('(display-mode: standalone)').matches) {
         setIsVisible(false);
@@ -59,6 +71,8 @@ const InstallPWA = () => {
   };
 
   const handleCloseClick = () => {
+    // Save the timestamp when the user dismisses the prompt
+    localStorage.setItem(PWA_PROMPT_DISMISSED_KEY, Date.now().toString());
     setIsVisible(false);
   };
 
