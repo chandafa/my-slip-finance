@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -17,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog"
 import { LogOut, User, Settings, Search } from "lucide-react"
 import { useEffect, useState } from "react";
@@ -25,12 +25,14 @@ import { useAuth } from "@/lib/auth";
 import { useTranslation } from "@/hooks/use-translation"
 import { Input } from "@/components/ui/input"
 import { useSearch } from "@/hooks/use-search"
+import { SearchResultList } from "./SearchResultList"
 
 export function Header() {
   const { user, logout } = useAuth();
   const { t, language } = useTranslation();
   const { searchTerm, setSearchTerm } = useSearch();
   const [currentDate, setCurrentDate] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     const updateDate = () => {
@@ -45,6 +47,13 @@ export function Header() {
 
     updateDate();
   }, [language]);
+  
+  // Reset search term when dialog is closed
+  useEffect(() => {
+    if (!isSearchOpen) {
+      setSearchTerm('');
+    }
+  }, [isSearchOpen, setSearchTerm]);
 
 
   return (
@@ -68,24 +77,30 @@ export function Header() {
 
        <div className="flex items-center gap-2">
           {/* Mobile Search */}
-          <Dialog>
+          <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
             <DialogTrigger asChild>
                 <Button variant="ghost" size="icon" className="sm:hidden">
                     <Search />
                     <span className="sr-only">Cari Transaksi</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
+            <DialogContent className="sm:max-w-md top-0 h-full max-h-screen translate-y-0 rounded-none flex flex-col">
+                <DialogHeader className="flex-shrink-0">
                     <DialogTitle>Cari Transaksi</DialogTitle>
                 </DialogHeader>
-                 <div className="relative">
+                 <div className="relative flex-shrink-0">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <Input 
                         placeholder="Ketik untuk mencari..."
                         className="pl-10"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <div className="flex-grow overflow-auto -mx-6">
+                    <SearchResultList 
+                        searchTerm={searchTerm} 
+                        onItemClick={() => setIsSearchOpen(false)}
                     />
                 </div>
             </DialogContent>
