@@ -197,5 +197,21 @@
     "app_version": "Versi Aplikasi",
     "pwa_install_title": "Install Aplikasi",
     "pwa_install_desc": "Akses lebih cepat ke aplikasi MySlip",
-    "pwa_install_button": "Install"
+    "pwa_install_button": "Install",
+    "accessibility_title": "Aksesibilitas",
+    "accessibility_desc": "Kelola fitur aksesibilitas untuk pengalaman yang lebih baik.",
+    "accessibility_menu_link": "Buka Pengaturan Aksesibilitas",
+    "accessibility_page_title": "Pengaturan Aksesibilitas",
+    "accessibility_hearing_title": "Pendengaran",
+    "accessibility_tts_label": "Teks ke Suara (Text-to-Speech)",
+    "accessibility_vision_title": "Penglihatan",
+    "accessibility_high_contrast_label": "Mode Kontras Tinggi",
+    "accessibility_zoom_label": "Perbesar Layar",
+    "accessibility_color_filter_label": "Penyaring Warna",
+    "accessibility_color_filter_placeholder": "Pilih Filter",
+    "accessibility_other_title": "Lain-lain",
+    "accessibility_font_size_label": "Ukuran Teks",
+    "accessibility_font_size_small": "Kecil",
+    "accessibility_font_size_default": "Standar",
+    "accessibility_font_size_large": "Besar"
 }

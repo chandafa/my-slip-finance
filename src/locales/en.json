@@ -197,5 +197,21 @@
     "app_version": "App Version",
     "pwa_install_title": "Install App",
     "pwa_install_desc": "Get faster access to the MySlip app",
-    "pwa_install_button": "Install"
+    "pwa_install_button": "Install",
+    "accessibility_title": "Accessibility",
+    "accessibility_desc": "Manage accessibility features for a better experience.",
+    "accessibility_menu_link": "Open Accessibility Settings",
+    "accessibility_page_title": "Accessibility Settings",
+    "accessibility_hearing_title": "Hearing",
+    "accessibility_tts_label": "Text-to-Speech",
+    "accessibility_vision_title": "Vision",
+    "accessibility_high_contrast_label": "High Contrast Mode",
+    "accessibility_zoom_label": "Screen Magnifier",
+    "accessibility_color_filter_label": "Color Filter",
+    "accessibility_color_filter_placeholder": "Select Filter",
+    "accessibility_other_title": "Other",
+    "accessibility_font_size_label": "Text Size",
+    "accessibility_font_size_small": "Small",
+    "accessibility_font_size_default": "Default",
+    "accessibility_font_size_large": "Large"
 }

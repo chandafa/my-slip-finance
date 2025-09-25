@@ -4,7 +4,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bell, Palette, Globe, DollarSign, LogOut, User, Shield, Lock, MessageSquare } from "lucide-react";
+import { Bell, Palette, Globe, DollarSign, LogOut, User, Shield, Lock, MessageSquare, Accessibility } from "lucide-react";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import Link from "next/link";
 import { useTranslation } from "@/hooks/use-translation";
@@ -45,6 +45,23 @@ export default function SettingsPage() {
               <div className="flex items-center gap-4">
                 <Lock className="h-5 w-5 text-muted-foreground" />
                 <span>{t('app_lock_link')}</span>
+              </div>
+            </div>
+          </Link>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('accessibility_title')}</CardTitle>
+          <CardDescription>{t('accessibility_desc')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-1 divide-y">
+          <Link href="/pengaturan/aksesibilitas">
+            <div className="flex items-center justify-between p-4 rounded-lg hover:bg-accent cursor-pointer">
+              <div className="flex items-center gap-4">
+                <Accessibility className="h-5 w-5 text-muted-foreground" />
+                <span>{t('accessibility_menu_link')}</span>
               </div>
             </div>
           </Link>
