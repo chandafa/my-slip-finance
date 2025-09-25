@@ -26,7 +26,7 @@ import { formatCurrency } from '@/lib/utils';
 import { useTranslation } from '@/hooks/use-translation';
 
 export default function CollabPage() {
-  const { user } = useAuth();
+  const { user, isBalanceVisible } = useAuth();
   const { t } = useTranslation();
   const { toast } = useToast();
   const [wallets, setWallets] = useState<Wallet[]>([]);
@@ -147,7 +147,7 @@ export default function CollabPage() {
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="text-3xl font-bold">
-                    {formatCurrency(wallet.balance)}
+                    {isBalanceVisible ? formatCurrency(wallet.balance) : 'Rp ••••••••'}
                   </div>
                 </CardContent>
               </Card>
@@ -163,5 +163,3 @@ export default function CollabPage() {
     </div>
   );
 }
-
-    

@@ -14,15 +14,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, Plus, ArrowLeft, Users, Mail, Link as LinkIcon, LogOut, ArrowUpRight, ArrowDownLeft } from "lucide-react";
+import { Loader2, Plus, ArrowLeft, Users, Mail, Link as LinkIcon, LogOut, ArrowUpRight, ArrowDownLeft, Eye, EyeOff } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/componentsui/select";
 import { format } from 'date-fns';
 import { id, enUS } from 'date-fns/locale';
 import { useTranslation } from '@/hooks/use-translation';
 
 export default function WalletDetailPage() {
-  const { user } = useAuth();
+  const { user, isBalanceVisible, toggleBalanceVisibility } = useAuth();
   const router = useRouter();
   const params = useParams();
   const walletId = params.walletId as string;
@@ -109,27 +109,28 @@ export default function WalletDetailPage() {
         return;
       }
       
-      const userToInvite = querySnapshot.docs[0].data() as WalletMember;
+      const userToInviteDoc = querySnapshot.docs[0];
       
       // 2. Check if user is already a member
-      if (wallet.memberIds.includes(userToInvite.uid)) {
+      if (wallet.memberIds.includes(userToInviteDoc.id)) {
         toast({ title: "Gagal", description: "Pengguna ini sudah menjadi anggota dompet.", variant: "default" });
         return;
       }
 
       // 3. Add user to the wallet
+      const userToInvite = userToInviteDoc.data();
       const walletRef = doc(db, 'wallets', walletId);
       await updateDoc(walletRef, {
-        memberIds: arrayUnion(userToInvite.uid),
+        memberIds: arrayUnion(userToInviteDoc.id),
         members: arrayUnion({
-          uid: userToInvite.uid,
+          uid: userToInviteDoc.id,
           email: userToInvite.email,
-          name: userToInvite.name,
+          name: userToInvite.displayName,
           photoURL: userToInvite.photoURL || '',
         })
       });
 
-      toast({ title: "Sukses", description: `${userToInvite.name || userToInvite.email} telah ditambahkan ke dompet.` });
+      toast({ title: "Sukses", description: `${userToInvite.displayName || userToInvite.email} telah ditambahkan ke dompet.` });
       setInviteEmail('');
       setIsInviteOpen(false);
 
@@ -244,11 +245,16 @@ export default function WalletDetailPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="md:col-span-1">
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>{t('collab_detail_balance')}</CardTitle>
+                <Button variant="ghost" size="icon" onClick={toggleBalanceVisibility}>
+                  {isBalanceVisible ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </Button>
             </CardHeader>
             <CardContent>
-                <p className="text-4xl font-bold">{formatCurrency(wallet.balance)}</p>
+                <p className="text-4xl font-bold">
+                  {isBalanceVisible ? formatCurrency(wallet.balance) : 'Rp ••••••••'}
+                </p>
             </CardContent>
         </Card>
         
@@ -383,5 +389,3 @@ export default function WalletDetailPage() {
     </div>
   );
 }
-
-    

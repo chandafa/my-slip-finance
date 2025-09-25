@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { formatCurrency } from "@/lib/utils"
 import { cn } from "@/lib/utils"
 import { useTranslation } from "@/hooks/use-translation";
+import { useAuth } from "@/lib/auth";
 
 type StatCardProps = {
   title: string;
@@ -15,6 +16,7 @@ type StatCardProps = {
 
 export function StatCard({ title, value, icon, type }: StatCardProps) {
   const { t } = useTranslation();
+  const { isBalanceVisible } = useAuth();
   const cardClass = type === 'income' ? "bg-income text-income-foreground" : "bg-expense text-expense-foreground";
 
   return (
@@ -26,10 +28,10 @@ export function StatCard({ title, value, icon, type }: StatCardProps) {
             </div>
             <p className="text-sm font-semibold">{title}</p>
         </div>
-        <p className="text-2xl font-bold mt-2">{formatCurrency(value)}</p>
+        <p className="text-2xl font-bold mt-2">
+          {isBalanceVisible ? formatCurrency(value) : 'Rp ••••••••'}
+        </p>
       </CardContent>
     </Card>
   )
 }
-
-    

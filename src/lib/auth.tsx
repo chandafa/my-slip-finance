@@ -14,6 +14,7 @@ interface AuthContextType {
   isFirstTime: boolean | null;
   isPinEnabled: boolean;
   isPinLocked: boolean;
+  isBalanceVisible: boolean;
   loginWithGoogle: () => Promise<void>;
   loginWithGitHub: () => Promise<void>;
   registerWithEmail: (email:string, password:string) => Promise<any>;
@@ -24,6 +25,7 @@ interface AuthContextType {
   enablePin: (enabled: boolean) => void;
   setPin: (pin: string) => void;
   unlockWithPin: (pin: string) => boolean;
+  toggleBalanceVisibility: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -59,6 +61,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // PIN State
   const [isPinEnabled, setIsPinEnabled] = useState(false);
   const [isPinLocked, setIsPinLocked] = useState(true);
+  
+  // Balance Visibility State
+  const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
 
   useEffect(() => {
@@ -179,6 +184,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     return false;
   };
+  
+  const toggleBalanceVisibility = () => {
+    setIsBalanceVisible(prev => !prev);
+  }
 
 
   const value = {
@@ -187,6 +196,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isFirstTime,
     isPinEnabled,
     isPinLocked,
+    isBalanceVisible,
     loginWithGoogle,
     loginWithGitHub,
     registerWithEmail,
@@ -197,6 +207,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     enablePin,
     setPin,
     unlockWithPin,
+    toggleBalanceVisibility
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
