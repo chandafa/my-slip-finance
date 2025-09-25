@@ -10,6 +10,7 @@ import { AddTransactionDialog } from "@/components/dashboard/AddTransactionDialo
 import { Splash } from "@/components/auth/Splash";
 import { PinLockScreen } from "@/components/auth/PinLockScreen";
 import { SmartAlerts } from "@/components/dashboard/SmartAlerts";
+import { SearchProvider } from "@/hooks/use-search";
 
 function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, isPinEnabled, isPinLocked } = useAuth();
@@ -62,9 +63,9 @@ export default function DashboardLayout({
 }) {
   return (
     <AuthProvider>
-      <ProtectedLayout>{children}</ProtectedLayout>
+      <SearchProvider>
+        <ProtectedLayout>{children}</ProtectedLayout>
+      </SearchProvider>
     </AuthProvider>
   )
 }
-
-    
