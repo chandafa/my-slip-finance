@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,9 +8,11 @@ import { Bell, Palette, Globe, DollarSign, LogOut, User, Shield, Lock, MessageSq
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import Link from "next/link";
 import { useTranslation } from "@/hooks/use-translation";
+import packageJson from '@/../package.json';
 
 export default function SettingsPage() {
   const { t, setLanguage, language } = useTranslation();
+  const appVersion = packageJson.version;
 
   return (
     <div className="space-y-6">
@@ -145,6 +148,11 @@ export default function SettingsPage() {
           </div>
         </CardContent>
       </Card>
+
+      <div className="text-center text-sm text-muted-foreground py-4">
+        <p>Copyright by Candra Kirana - chandafa</p>
+        <p>{t('app_version')}: {appVersion}</p>
+      </div>
     </div>
   );
 }

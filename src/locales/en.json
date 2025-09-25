@@ -193,5 +193,6 @@
     "trend_top_categories_title": "Top Spending Categories",
     "trend_no_expense_data": "No expense data yet.",
     "chatbot_page_title": "Help Center",
-    "chatbot_page_desc": "How can we help you?"
+    "chatbot_page_desc": "How can we help you?",
+    "app_version": "App Version"
 }
