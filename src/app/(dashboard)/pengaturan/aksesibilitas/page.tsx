@@ -39,28 +39,28 @@ export default function AccessibilitySettingsPage() {
                             <Volume2 className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_tts_label')}
                         </Label>
-                        <Switch id="tts-switch" disabled />
+                        <Switch id="tts-switch" />
                     </div>
                      <div className="flex items-center justify-between pt-4">
                         <Label htmlFor="subtitles-switch" className="flex items-center gap-4 cursor-pointer text-base">
                             <Subtitles className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_subtitles_label')}
                         </Label>
-                        <Switch id="subtitles-switch" disabled/>
+                        <Switch id="subtitles-switch" />
                     </div>
                      <div className="flex items-center justify-between pt-4">
                         <Label htmlFor="auto-transcription-switch" className="flex items-center gap-4 cursor-pointer text-base">
                             <AudioLines className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_transcription_label')}
                         </Label>
-                        <Switch id="auto-transcription-switch" disabled/>
+                        <Switch id="auto-transcription-switch" />
                     </div>
                      <div className="flex items-center justify-between pt-4">
                         <Label htmlFor="visual-alerts-switch" className="flex items-center gap-4 cursor-pointer text-base">
                             <Ear className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_visual_alerts_label')}
                         </Label>
-                        <Switch id="visual-alerts-switch" disabled/>
+                        <Switch id="visual-alerts-switch" />
                     </div>
                 </CardContent>
             </Card>
@@ -83,7 +83,7 @@ export default function AccessibilitySettingsPage() {
                             <ZoomIn className="h-5 w-5 text-muted-foreground" />
                            {t('accessibility_zoom_label')}
                         </Label>
-                        <Switch id="zoom-switch" disabled />
+                        <Switch id="zoom-switch" />
                     </div>
                     <Link href="/pengaturan">
                          <div className="flex items-center justify-between pt-4">
@@ -99,7 +99,7 @@ export default function AccessibilitySettingsPage() {
                              <Droplets className="h-5 w-5 text-muted-foreground" />
                              {t('accessibility_color_filter_label')}
                         </Label>
-                        <Select disabled>
+                        <Select>
                             <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder={t('accessibility_color_filter_placeholder')} />
                             </SelectTrigger>
@@ -132,7 +132,7 @@ export default function AccessibilitySettingsPage() {
                             <MousePointerClick className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_voice_control_label')}
                         </Label>
-                        <Switch id="voice-control-switch" disabled/>
+                        <Switch id="voice-control-switch" />
                     </div>
                 </CardContent>
             </Card>
@@ -148,7 +148,7 @@ export default function AccessibilitySettingsPage() {
                             <Focus className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_focus_mode_label')}
                         </Label>
-                        <Switch id="focus-mode-switch" disabled/>
+                        <Switch id="focus-mode-switch" />
                     </div>
                     <Link href="/chatbot">
                         <div className="flex items-center justify-between pt-4">
@@ -189,14 +189,14 @@ export default function AccessibilitySettingsPage() {
                             <Fingerprint className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_haptic_label')}
                         </Label>
-                        <Switch id="haptic-switch" disabled/>
+                        <Switch id="haptic-switch" />
                     </div>
                      <div className="flex items-center justify-between pt-4">
                         <Label htmlFor="qr-reader-switch" className="flex items-center gap-4 cursor-pointer text-base">
                             <ScanText className="h-5 w-5 text-muted-foreground" />
                            {t('accessibility_qr_reader_label')}
                         </Label>
-                        <Switch id="qr-reader-switch" disabled/>
+                        <Switch id="qr-reader-switch" />
                     </div>
                 </CardContent>
             </Card>
