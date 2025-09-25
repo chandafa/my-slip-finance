@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
@@ -54,6 +53,7 @@ const updateUserInFirestore = async (user: User) => {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
@@ -71,20 +71,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(user);
       if (user) {
         updateUserInFirestore(user);
-        // Check if it's the user's first time
+        
+        const redirectPath = localStorage.getItem('redirectAfterLogin');
+        if (redirectPath) {
+            localStorage.removeItem('redirectAfterLogin');
+            router.push(redirectPath);
+            setLoading(false);
+            return;
+        }
+
         const firstTime = localStorage.getItem('isFirstTime') === null;
         if (firstTime) {
           localStorage.setItem('isFirstTime', 'false');
           setIsFirstTime(true);
+          router.push('/onboarding');
         } else {
            setIsFirstTime(false);
+           router.push('/dashboard');
         }
+
         // PIN check
         const pinEnabled = localStorage.getItem(`pin_enabled_${user.uid}`) === 'true';
         setIsPinEnabled(pinEnabled);
-        setIsPinLocked(pinEnabled); // Lock the app if PIN is enabled
+        setIsPinLocked(pinEnabled);
       } else {
-        // If no user, reset states
         localStorage.removeItem('isFirstTime');
         setIsFirstTime(null);
         setIsPinEnabled(false);
@@ -94,7 +104,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [router]);
   
   const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -143,7 +153,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await signOut(auth);
       localStorage.removeItem('isFirstTime');
-      // No need to manually redirect, onAuthStateChanged will trigger a re-render
+      router.push('/login');
     } catch (error) {
        console.error("Error signing out:", error);
     }
