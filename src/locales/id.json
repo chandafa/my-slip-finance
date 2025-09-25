@@ -194,5 +194,8 @@
     "trend_no_expense_data": "Belum ada data pengeluaran.",
     "chatbot_page_title": "Pusat Bantuan",
     "chatbot_page_desc": "Ada yang bisa kami bantu?",
-    "app_version": "Versi Aplikasi"
+    "app_version": "Versi Aplikasi",
+    "pwa_install_title": "Install Aplikasi",
+    "pwa_install_desc": "Akses lebih cepat ke aplikasi MySlip",
+    "pwa_install_button": "Install"
 }

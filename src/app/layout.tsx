@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/lib/auth';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { TranslationProvider } from '@/hooks/use-translation';
+import InstallPWA from '@/components/pwa/InstallPWA';
 
 export const metadata: Metadata = {
   title: 'MySlip Dashboard',
@@ -46,6 +47,7 @@ export default function RootLayout({
           <AuthProvider>
             <TranslationProvider>
               {children}
+              <InstallPWA />
             </TranslationProvider>
           </AuthProvider>
           <Toaster />

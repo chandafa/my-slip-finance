@@ -194,5 +194,8 @@
     "trend_no_expense_data": "No expense data yet.",
     "chatbot_page_title": "Help Center",
     "chatbot_page_desc": "How can we help you?",
-    "app_version": "App Version"
+    "app_version": "App Version",
+    "pwa_install_title": "Install App",
+    "pwa_install_desc": "Get faster access to the MySlip app",
+    "pwa_install_button": "Install"
 }
