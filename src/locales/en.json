@@ -6,6 +6,9 @@
     "edit_profile_link": "Edit Profile",
     "security_password_link": "Security & Password",
     "app_lock_link": "App Lock (PIN)",
+    "help_title": "Help",
+    "help_desc": "Need help? Contact our chatbot.",
+    "chatbot_link": "Help Chatbot",
     "notifications_title": "Notifications",
     "notifications_desc": "Manage your notification preferences.",
     "promo_notifications_label": "Promo Notifications",
@@ -188,7 +191,7 @@
     "trend_monthly_title": "Income & Expense Trend (Last 6 Months)",
     "trend_distribution_title": "Expense Distribution",
     "trend_top_categories_title": "Top Spending Categories",
-    "trend_no_expense_data": "No expense data yet."
+    "trend_no_expense_data": "No expense data yet.",
+    "chatbot_page_title": "Help Center",
+    "chatbot_page_desc": "How can we help you?"
 }
-
-    

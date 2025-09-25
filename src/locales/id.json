@@ -6,6 +6,9 @@
     "edit_profile_link": "Edit Profil",
     "security_password_link": "Keamanan & Kata Sandi",
     "app_lock_link": "Kunci Aplikasi (PIN)",
+    "help_title": "Bantuan",
+    "help_desc": "Butuh bantuan? Hubungi chatbot kami.",
+    "chatbot_link": "Chatbot Bantuan",
     "notifications_title": "Notifikasi",
     "notifications_desc": "Atur preferensi notifikasi Anda.",
     "promo_notifications_label": "Notifikasi Promo",
@@ -188,7 +191,7 @@
     "trend_monthly_title": "Tren Pemasukan & Pengeluaran (6 Bulan Terakhir)",
     "trend_distribution_title": "Distribusi Pengeluaran",
     "trend_top_categories_title": "Top Kategori Pengeluaran",
-    "trend_no_expense_data": "Belum ada data pengeluaran."
+    "trend_no_expense_data": "Belum ada data pengeluaran.",
+    "chatbot_page_title": "Pusat Bantuan",
+    "chatbot_page_desc": "Ada yang bisa kami bantu?"
 }
-
-    

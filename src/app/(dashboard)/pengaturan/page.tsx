@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bell, Palette, Globe, DollarSign, LogOut, User, Shield, Lock } from "lucide-react";
+import { Bell, Palette, Globe, DollarSign, LogOut, User, Shield, Lock, MessageSquare } from "lucide-react";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import Link from "next/link";
 import { useTranslation } from "@/hooks/use-translation";
@@ -48,6 +48,23 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('help_title')}</CardTitle>
+          <CardDescription>{t('help_desc')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-1 divide-y">
+          <Link href="/chatbot">
+            <div className="flex items-center justify-between p-4 rounded-lg hover:bg-accent cursor-pointer">
+              <div className="flex items-center gap-4">
+                <MessageSquare className="h-5 w-5 text-muted-foreground" />
+                <span>{t('chatbot_link')}</span>
+              </div>
+            </div>
+          </Link>
+        </CardContent>
+      </Card>
+      
       <Card>
         <CardHeader>
           <CardTitle>{t('notifications_title')}</CardTitle>
