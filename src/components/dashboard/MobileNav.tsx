@@ -68,8 +68,8 @@ export function MobileNav() {
             >
               <item.icon 
                 className={cn(
-                  "h-7 w-7 transition-colors duration-200",
-                  isActive ? "text-primary" : "text-muted-foreground",
+                  "h-7 w-7 transition-all duration-300",
+                  isActive ? "text-primary scale-110" : "text-muted-foreground",
                   "hover:text-primary"
                 )} 
               />
@@ -77,7 +77,7 @@ export function MobileNav() {
           );
         })}
         <div 
-          className="absolute left-0 top-0 h-full rounded-full bg-primary/10 transition-all duration-300 ease-out"
+          className="absolute left-0 top-0 h-full rounded-full bg-primary/10 transition-all duration-300 ease-in-out"
           style={{
             width: `${100 / navItems.length}%`,
             transform: `translateX(${activeIndex * 100}%)`,

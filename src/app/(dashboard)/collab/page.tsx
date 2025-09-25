@@ -22,7 +22,7 @@ import { db } from '@/lib/firebase';
 import { collection, addDoc, query, where, onSnapshot, serverTimestamp, arrayUnion } from 'firebase/firestore';
 import type { Wallet } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/use-translation';
 
 export default function CollabPage() {
@@ -137,8 +137,11 @@ export default function CollabPage() {
       ) : wallets.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {wallets.map(wallet => (
-            <Link href={`/collab/${wallet.id}`} key={wallet.id} className="focus:outline-none focus:ring-2 focus:ring-ring rounded-xl">
-              <Card className="flex flex-col h-full hover:bg-card/80 transition-colors">
+            <Link href={`/collab/${wallet.id}`} key={wallet.id} className="focus:outline-none focus:ring-2 focus:ring-ring rounded-xl block">
+              <Card className={cn(
+                "flex flex-col h-full transition-all duration-200",
+                "hover:bg-card/80 hover:shadow-lg hover:-translate-y-1"
+              )}>
                 <CardHeader>
                   <CardTitle>{wallet.name}</CardTitle>
                   <CardDescription className="flex items-center gap-2 pt-1">
