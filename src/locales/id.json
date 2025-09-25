@@ -227,5 +227,7 @@
     "accessibility_font_size_default": "Standar",
     "accessibility_font_size_large": "Besar",
     "accessibility_haptic_label": "Notifikasi Haptik",
-    "accessibility_qr_reader_label": "Pembaca QR/Barcode Suara"
+    "accessibility_qr_reader_label": "Pembaca QR/Barcode Suara",
+    "cash_flow_calendar_title": "Kalender Arus Kas",
+    "cash_flow_calendar_desc": "Jadwal pemasukan & pengeluaran Anda."
 }

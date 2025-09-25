@@ -227,5 +227,7 @@
     "accessibility_font_size_default": "Default",
     "accessibility_font_size_large": "Large",
     "accessibility_haptic_label": "Haptic Notifications",
-    "accessibility_qr_reader_label": "Voice QR/Barcode Reader"
+    "accessibility_qr_reader_label": "Voice QR/Barcode Reader",
+    "cash_flow_calendar_title": "Cash Flow Calendar",
+    "cash_flow_calendar_desc": "Your upcoming income & expenses schedule."
 }

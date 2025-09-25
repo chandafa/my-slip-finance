@@ -12,6 +12,7 @@ import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { Transaction } from '@/lib/types';
 import { useTranslation } from '@/hooks/use-translation';
+import { CashFlowCalendar } from '@/components/dashboard/CashFlowCalendar';
 
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react"
 
@@ -59,8 +60,9 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 md:col-span-2">
           <TransactionList />
         </div>
-        <div className="lg:col-span-2 md:col-span-2">
-          <IncomeExpenseChart />
+        <div className="lg:col-span-2 md:col-span-2 grid grid-cols-1 gap-6">
+           <IncomeExpenseChart />
+           <CashFlowCalendar />
         </div>
       </div>
     </div>
