@@ -29,6 +29,7 @@ import { id, enUS } from 'date-fns/locale';
 import { CATEGORIES } from "@/lib/data";
 import { deleteTransaction, updateTransaction } from '@/lib/actions';
 import { useTranslation } from '@/hooks/use-translation';
+import { Badge } from '@/components/ui/badge';
 
 export default function TransactionDetailPage() {
   const { user } = useAuth();
@@ -131,12 +132,13 @@ export default function TransactionDetailPage() {
       </div>
       
       <Card>
-        <CardHeader className="text-center bg-muted/30">
+        <CardHeader className="text-center bg-muted/30 items-center">
             <p className={cn("text-4xl font-bold", isIncome ? 'text-green-600' : 'text-red-500')}>
                 {isIncome ? '+' : '-'} {formatCurrency(transaction.amount)}
             </p>
             <CardTitle className="text-2xl">{transaction.title}</CardTitle>
-            <CardDescription>{format(date, 'eeee, dd MMMM yyyy, HH:mm', { locale: language === 'id' ? id : enUS })}</CardDescription>
+            <Badge variant="outline" className="mt-1">{transaction.category}</Badge>
+            <CardDescription className="pt-2">{format(date, 'eeee, dd MMMM yyyy, HH:mm', { locale: language === 'id' ? id : enUS })}</CardDescription>
         </CardHeader>
         <CardContent className="p-6 grid gap-4">
              <div className="flex items-center gap-4">
@@ -173,5 +175,3 @@ export default function TransactionDetailPage() {
     </div>
   );
 }
-
-    
