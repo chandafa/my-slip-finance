@@ -82,19 +82,19 @@ const InstallPWA = () => {
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-50">
-      <div className="bg-green-600 text-white rounded-lg p-4 flex items-center justify-between shadow-lg">
+      <div className="bg-primary text-primary-foreground rounded-lg p-4 flex items-center justify-between shadow-lg">
         <div className="flex items-center gap-4">
           <Smartphone className="h-8 w-8" />
           <div>
             <h3 className="font-bold">{t('pwa_install_title')}</h3>
-            <p className="text-sm">{t('pwa_install_desc')}</p>
+            <p className="text-sm opacity-90">{t('pwa_install_desc')}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={handleInstallClick} size="sm" className="bg-white text-green-600 hover:bg-white/90">
+          <Button onClick={handleInstallClick} size="sm" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
             {t('pwa_install_button')}
           </Button>
-          <Button onClick={handleCloseClick} variant="ghost" size="icon" className="text-white hover:bg-white/20">
+          <Button onClick={handleCloseClick} variant="ghost" size="icon" className="text-primary-foreground hover:bg-primary-foreground/20">
             <X className="h-5 w-5" />
           </Button>
         </div>
