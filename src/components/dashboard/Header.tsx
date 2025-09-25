@@ -11,6 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { LogOut, User, Settings, Search } from "lucide-react"
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -60,6 +67,30 @@ export function Header() {
       </div>
 
        <div className="flex items-center gap-2">
+          {/* Mobile Search */}
+          <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="sm:hidden">
+                    <Search />
+                    <span className="sr-only">Cari Transaksi</span>
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Cari Transaksi</DialogTitle>
+                </DialogHeader>
+                 <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input 
+                        placeholder="Ketik untuk mencari..."
+                        className="pl-10"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+            </DialogContent>
+          </Dialog>
+
          <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
