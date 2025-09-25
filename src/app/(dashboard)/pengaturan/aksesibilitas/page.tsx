@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -9,10 +9,15 @@ import { ArrowLeft, Volume2, Contrast, ZoomIn, Palette, Type, Droplets, Ear, Sub
 import { useTranslation } from "@/hooks/use-translation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Link from "next/link";
+import { useAccessibility } from "@/hooks/use-accessibility";
 
 export default function AccessibilitySettingsPage() {
     const router = useRouter();
     const { t } = useTranslation();
+    const { 
+        highContrast, setHighContrast, 
+        textSize, setTextSize
+    } = useAccessibility();
 
     return (
         <div className="space-y-6">
@@ -34,7 +39,7 @@ export default function AccessibilitySettingsPage() {
                             <Volume2 className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_tts_label')}
                         </Label>
-                        <Switch id="tts-switch" />
+                        <Switch id="tts-switch" disabled />
                     </div>
                      <div className="flex items-center justify-between pt-4">
                         <Label htmlFor="subtitles-switch" className="flex items-center gap-4 cursor-pointer text-base">
@@ -71,7 +76,7 @@ export default function AccessibilitySettingsPage() {
                             <Contrast className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_high_contrast_label')}
                         </Label>
-                        <Switch id="high-contrast-switch" />
+                        <Switch id="high-contrast-switch" checked={highContrast} onCheckedChange={setHighContrast} />
                     </div>
                      <div className="flex items-center justify-between pt-4">
                         <Label htmlFor="zoom-switch" className="flex items-center gap-4 cursor-pointer text-base">
@@ -168,14 +173,14 @@ export default function AccessibilitySettingsPage() {
                             <Type className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_font_size_label')}
                         </Label>
-                         <Select>
+                         <Select value={textSize} onValueChange={(value) => setTextSize(value as 'text-base' | 'text-sm' | 'text-lg')}>
                             <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder={t('accessibility_font_size_default')} />
+                                <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="small">{t('accessibility_font_size_small')}</SelectItem>
-                                <SelectItem value="default">{t('accessibility_font_size_default')}</SelectItem>
-                                <SelectItem value="large">{t('accessibility_font_size_large')}</SelectItem>
+                                <SelectItem value="text-sm">{t('accessibility_font_size_small')}</SelectItem>
+                                <SelectItem value="text-base">{t('accessibility_font_size_default')}</SelectItem>
+                                <SelectItem value="text-lg">{t('accessibility_font_size_large')}</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
