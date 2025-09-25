@@ -231,7 +231,16 @@
     "cash_flow_calendar_title": "Kalender Arus Kas",
     "cash_flow_calendar_desc": "Jadwal pemasukan & pengeluaran Anda.",
     "customize_dashboard_title": "Sesuaikan Dasbor",
-    "customize_dashboard_desc": "Atur ulang urutan kartu di dasbor Anda."
+    "customize_dashboard_desc": "Atur ulang urutan kartu di dasbor Anda.",
+    "customize_dashboard_page_title": "Sesuaikan Dasbor",
+    "customize_dashboard_page_desc": "Klik panah untuk mengatur ulang urutan kartu di dasbor utama Anda.",
+    "customize_dashboard_save_button": "Simpan Tata Letak",
+    "customize_dashboard_reset_button": "Kembali ke Awal",
+    "customize_dashboard_balance_card": "Kartu Saldo",
+    "customize_dashboard_stat_cards": "Kartu Ringkasan (Pemasukan/Pengeluaran)",
+    "customize_dashboard_transaction_list": "Transaksi Terkini",
+    "customize_dashboard_income_expense_chart": "Grafik Bulanan",
+    "customize_dashboard_cash_flow_calendar": "Kalender Arus Kas"
 }
 
     

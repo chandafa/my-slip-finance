@@ -15,11 +15,26 @@ import { useTranslation } from '@/hooks/use-translation';
 import { CashFlowCalendar } from '@/components/dashboard/CashFlowCalendar';
 
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react"
+import { useDashboardLayout } from '@/hooks/use-dashboard-layout';
+
+const componentMap = {
+  BalanceCard,
+  StatCards: (props: any) => (
+    <div className="col-span-1 grid grid-cols-2 gap-6 md:col-span-2 lg:col-span-2">
+      <StatCard title={props.t('stat_card_income')} value={props.totalIncome} type="income" icon={<ArrowUpRight className="h-5 w-5" />} />
+      <StatCard title={props.t('stat_card_expense')} value={props.totalExpense} type="expense" icon={<ArrowDownLeft className="h-5 w-5" />} />
+    </div>
+  ),
+  TransactionList,
+  IncomeExpenseChart,
+  CashFlowCalendar,
+};
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const { t } = useTranslation();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { layout } = useDashboardLayout();
   
   useEffect(() => {
     if (user) {
@@ -46,24 +61,44 @@ export default function DashboardPage() {
 
   const balance = totalIncome - totalExpense;
 
+  const componentProps: { [key: string]: any } = {
+    BalanceCard: { balance },
+    StatCards: { totalIncome, totalExpense, t },
+    TransactionList: {},
+    IncomeExpenseChart: {},
+    CashFlowCalendar: {},
+  };
+
+  const getGridSpanClass = (componentName: string) => {
+    switch (componentName) {
+      case 'BalanceCard':
+      case 'StatCards':
+        return 'lg:col-span-2 md:col-span-2';
+      case 'TransactionList':
+        return 'lg:col-span-2 md:col-span-2';
+      case 'IncomeExpenseChart':
+      case 'CashFlowCalendar':
+        return 'lg:col-span-1 md:col-span-1';
+      default:
+        return 'lg:col-span-2 md:col-span-2';
+    }
+  };
+
+  const renderComponent = (componentName: string) => {
+    const Component = componentMap[componentName as keyof typeof componentMap];
+    if (!Component) return null;
+    return <Component {...componentProps[componentName]} />;
+  };
+
   return (
     <div className="space-y-6">
       <DashboardTour />
       <div id="balance-card-tour" className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <div className="col-span-1 md:col-span-2 lg:col-span-2">
-          <BalanceCard balance={balance} />
-        </div>
-        <div className="col-span-1 grid grid-cols-2 gap-6 md:col-span-2 lg:col-span-2">
-            <StatCard title={t('stat_card_income')} value={totalIncome} type="income" icon={<ArrowUpRight className="h-5 w-5" />} />
-            <StatCard title={t('stat_card_expense')} value={totalExpense} type="expense" icon={<ArrowDownLeft className="h-5 w-5" />} />
-        </div>
-        <div className="lg:col-span-2 md:col-span-2">
-          <TransactionList />
-        </div>
-        <div className="lg:col-span-2 md:col-span-2 grid grid-cols-1 gap-6">
-           <IncomeExpenseChart />
-           <CashFlowCalendar />
-        </div>
+        {layout.map((componentName) => (
+          <div key={componentName} className={getGridSpanClass(componentName)}>
+            {renderComponent(componentName)}
+          </div>
+        ))}
       </div>
     </div>
   );

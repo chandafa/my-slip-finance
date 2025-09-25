@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { onAuthStateChanged, User, signOut, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from 'firebase/auth';
 import { auth, db } from './firebase';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
@@ -54,6 +54,7 @@ const updateUserInFirestore = async (user: User) => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
   const router = useRouter();
+  const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
@@ -73,7 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         updateUserInFirestore(user);
         
         const redirectPath = localStorage.getItem('redirectAfterLogin');
-        if (redirectPath) {
+        if (redirectPath && redirectPath !== pathname) {
             localStorage.removeItem('redirectAfterLogin');
             router.push(redirectPath);
             setLoading(false);
@@ -87,7 +88,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           router.push('/onboarding');
         } else {
            setIsFirstTime(false);
-           router.push('/dashboard');
+           if (pathname === '/login' || pathname === '/register' || pathname === '/') {
+             router.push('/dashboard');
+           }
         }
 
         // PIN check
@@ -104,7 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, [router, pathname]);
   
   const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();

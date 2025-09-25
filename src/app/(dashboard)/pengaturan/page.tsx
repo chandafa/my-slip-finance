@@ -119,7 +119,7 @@ export default function SettingsPage() {
             </div>
             <ThemeToggle />
           </div>
-           <Link href="#">
+           <Link href="/pengaturan/kustomisasi-dasbor">
             <div className="flex items-center justify-between p-4 rounded-lg hover:bg-accent cursor-pointer">
               <div className="flex items-center gap-4">
                 <GripVertical className="h-5 w-5 text-muted-foreground" />

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useAuth, AuthProvider } from "@/lib/auth";
@@ -11,6 +10,7 @@ import { Splash } from "@/components/auth/Splash";
 import { PinLockScreen } from "@/components/auth/PinLockScreen";
 import { SmartAlerts } from "@/components/dashboard/SmartAlerts";
 import { SearchProvider } from "@/hooks/use-search";
+import { DashboardLayoutProvider } from "@/hooks/use-dashboard-layout";
 
 function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, isPinEnabled, isPinLocked } = useAuth();
@@ -18,7 +18,12 @@ function ProtectedLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login");
+      const redirectPath = localStorage.getItem('redirectAfterLogin');
+      if (redirectPath) {
+        // Don't redirect, let auth provider handle it
+      } else {
+        router.push("/login");
+      }
     }
   }, [user, loading, router]);
 
@@ -52,7 +57,9 @@ export default function DashboardLayout({
   return (
     <AuthProvider>
       <SearchProvider>
-        <ProtectedLayout>{children}</ProtectedLayout>
+        <DashboardLayoutProvider>
+          <ProtectedLayout>{children}</ProtectedLayout>
+        </DashboardLayoutProvider>
       </SearchProvider>
     </AuthProvider>
   )

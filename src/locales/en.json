@@ -231,7 +231,16 @@
     "cash_flow_calendar_title": "Cash Flow Calendar",
     "cash_flow_calendar_desc": "Your upcoming income & expenses schedule.",
     "customize_dashboard_title": "Customize Dashboard",
-    "customize_dashboard_desc": "Reorder the cards on your dashboard."
+    "customize_dashboard_desc": "Reorder the cards on your dashboard.",
+    "customize_dashboard_page_title": "Customize Dashboard",
+    "customize_dashboard_page_desc": "Click the arrows to reorder the cards on your main dashboard.",
+    "customize_dashboard_save_button": "Save Layout",
+    "customize_dashboard_reset_button": "Reset to Default",
+    "customize_dashboard_balance_card": "Balance Card",
+    "customize_dashboard_stat_cards": "Summary Cards (Income/Expense)",
+    "customize_dashboard_transaction_list": "Recent Transactions",
+    "customize_dashboard_income_expense_chart": "Monthly Chart",
+    "customize_dashboard_cash_flow_calendar": "Cash Flow Calendar"
 }
 
     
