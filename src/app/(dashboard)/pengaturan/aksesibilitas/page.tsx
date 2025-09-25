@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
@@ -6,9 +5,10 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Volume2, Contrast, ZoomIn, Palette, Type, Droplets } from "lucide-react";
+import { ArrowLeft, Volume2, Contrast, ZoomIn, Palette, Type, Droplets, Ear, Subtitles, Keyboard, MousePointerClick, AudioLines, Focus, Bot, ScanText, Fingerprint } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Link from "next/link";
 
 export default function AccessibilitySettingsPage() {
     const router = useRouter();
@@ -29,12 +29,33 @@ export default function AccessibilitySettingsPage() {
                     <CardTitle>{t('accessibility_hearing_title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 divide-y">
-                    <div className="flex items-center justify-between pt-4">
+                    <div className="flex items-center justify-between pt-4 first:pt-0">
                         <Label htmlFor="tts-switch" className="flex items-center gap-4 cursor-pointer text-base">
                             <Volume2 className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_tts_label')}
                         </Label>
                         <Switch id="tts-switch" />
+                    </div>
+                     <div className="flex items-center justify-between pt-4">
+                        <Label htmlFor="subtitles-switch" className="flex items-center gap-4 cursor-pointer text-base">
+                            <Subtitles className="h-5 w-5 text-muted-foreground" />
+                            {t('accessibility_subtitles_label')}
+                        </Label>
+                        <Switch id="subtitles-switch" disabled/>
+                    </div>
+                     <div className="flex items-center justify-between pt-4">
+                        <Label htmlFor="auto-transcription-switch" className="flex items-center gap-4 cursor-pointer text-base">
+                            <AudioLines className="h-5 w-5 text-muted-foreground" />
+                            {t('accessibility_transcription_label')}
+                        </Label>
+                        <Switch id="auto-transcription-switch" disabled/>
+                    </div>
+                     <div className="flex items-center justify-between pt-4">
+                        <Label htmlFor="visual-alerts-switch" className="flex items-center gap-4 cursor-pointer text-base">
+                            <Ear className="h-5 w-5 text-muted-foreground" />
+                            {t('accessibility_visual_alerts_label')}
+                        </Label>
+                        <Switch id="visual-alerts-switch" disabled/>
                     </div>
                 </CardContent>
             </Card>
@@ -45,7 +66,7 @@ export default function AccessibilitySettingsPage() {
                     <CardTitle>{t('accessibility_vision_title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 divide-y">
-                     <div className="flex items-center justify-between pt-4">
+                     <div className="flex items-center justify-between pt-4 first:pt-0">
                         <Label htmlFor="high-contrast-switch" className="flex items-center gap-4 cursor-pointer text-base">
                             <Contrast className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_high_contrast_label')}
@@ -59,6 +80,15 @@ export default function AccessibilitySettingsPage() {
                         </Label>
                         <Switch id="zoom-switch" disabled />
                     </div>
+                    <Link href="/pengaturan">
+                         <div className="flex items-center justify-between pt-4">
+                            <Label className="flex items-center gap-4 cursor-pointer text-base">
+                                <Palette className="h-5 w-5 text-muted-foreground" />
+                               {t('appearance_title')}
+                            </Label>
+                            <span className="text-sm text-muted-foreground">{t('accessibility_dark_mode_note')}</span>
+                        </div>
+                    </Link>
                     <div className="flex items-center justify-between pt-4">
                         <Label htmlFor="color-filter-select" className="flex items-center gap-4 cursor-pointer text-base">
                              <Droplets className="h-5 w-5 text-muted-foreground" />
@@ -78,6 +108,54 @@ export default function AccessibilitySettingsPage() {
                     </div>
                 </CardContent>
             </Card>
+            
+            {/* Motor / Physical */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>{t('accessibility_motor_title')}</CardTitle>
+                </CardHeader>
+                 <CardContent className="space-y-4 divide-y">
+                    <div className="flex items-center justify-between pt-4 first:pt-0">
+                        <Label htmlFor="keyboard-control-switch" className="flex items-center gap-4 cursor-pointer text-base">
+                            <Keyboard className="h-5 w-5 text-muted-foreground" />
+                            {t('accessibility_keyboard_control_label')}
+                        </Label>
+                        <span className="text-sm text-muted-foreground">{t('accessibility_enabled_default')}</span>
+                    </div>
+                     <div className="flex items-center justify-between pt-4">
+                        <Label htmlFor="voice-control-switch" className="flex items-center gap-4 cursor-pointer text-base">
+                            <MousePointerClick className="h-5 w-5 text-muted-foreground" />
+                            {t('accessibility_voice_control_label')}
+                        </Label>
+                        <Switch id="voice-control-switch" disabled/>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Cognitive */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>{t('accessibility_cognitive_title')}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 divide-y">
+                     <div className="flex items-center justify-between pt-4 first:pt-0">
+                        <Label htmlFor="focus-mode-switch" className="flex items-center gap-4 cursor-pointer text-base">
+                            <Focus className="h-5 w-5 text-muted-foreground" />
+                            {t('accessibility_focus_mode_label')}
+                        </Label>
+                        <Switch id="focus-mode-switch" disabled/>
+                    </div>
+                    <Link href="/chatbot">
+                        <div className="flex items-center justify-between pt-4">
+                            <Label className="flex items-center gap-4 cursor-pointer text-base">
+                                <Bot className="h-5 w-5 text-muted-foreground" />
+                                {t('accessibility_interactive_guide_label')}
+                            </Label>
+                            <span className="text-sm text-muted-foreground">{t('accessibility_ask_chatbot')}</span>
+                        </div>
+                    </Link>
+                </CardContent>
+            </Card>
 
             {/* Other */}
             <Card>
@@ -85,7 +163,7 @@ export default function AccessibilitySettingsPage() {
                     <CardTitle>{t('accessibility_other_title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 divide-y">
-                    <div className="flex items-center justify-between pt-4">
+                    <div className="flex items-center justify-between pt-4 first:pt-0">
                         <Label htmlFor="font-size-select" className="flex items-center gap-4 cursor-pointer text-base">
                             <Type className="h-5 w-5 text-muted-foreground" />
                             {t('accessibility_font_size_label')}
@@ -100,6 +178,20 @@ export default function AccessibilitySettingsPage() {
                                 <SelectItem value="large">{t('accessibility_font_size_large')}</SelectItem>
                             </SelectContent>
                         </Select>
+                    </div>
+                     <div className="flex items-center justify-between pt-4">
+                        <Label htmlFor="haptic-switch" className="flex items-center gap-4 cursor-pointer text-base">
+                            <Fingerprint className="h-5 w-5 text-muted-foreground" />
+                            {t('accessibility_haptic_label')}
+                        </Label>
+                        <Switch id="haptic-switch" disabled/>
+                    </div>
+                     <div className="flex items-center justify-between pt-4">
+                        <Label htmlFor="qr-reader-switch" className="flex items-center gap-4 cursor-pointer text-base">
+                            <ScanText className="h-5 w-5 text-muted-foreground" />
+                           {t('accessibility_qr_reader_label')}
+                        </Label>
+                        <Switch id="qr-reader-switch" disabled/>
                     </div>
                 </CardContent>
             </Card>
