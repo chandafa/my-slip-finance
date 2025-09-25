@@ -2,7 +2,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useAuth } from './auth';
+import { useAuth } from '@/lib/auth';
 
 const DASHBOARD_LAYOUT_STORAGE_KEY = 'dashboard-layout';
 const DEFAULT_LAYOUT = [
