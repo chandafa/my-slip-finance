@@ -54,7 +54,7 @@ export function MobileNav() {
     <div id="mobile-nav-tour" className="fixed bottom-0 left-0 right-0 z-10 p-4">
       <div 
         ref={containerRef}
-        className="relative flex h-16 items-center justify-around rounded-full bg-card shadow-lg max-w-md mx-auto"
+        className="relative flex h-16 items-center justify-around rounded-full bg-card shadow-lg max-w-md mx-auto border"
       >
         {navItems.map((item, index) => {
           const isActive = activeIndex === index;
@@ -88,5 +88,3 @@ export function MobileNav() {
     </div>
   );
 }
-
-    
