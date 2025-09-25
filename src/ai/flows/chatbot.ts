@@ -39,10 +39,10 @@ const chatbotPrompt = ai.definePrompt({
     prompt: `Based on the following conversation history and the user's new message, provide a helpful response.
   
   {{#each history}}
-  {{#if (eq role 'user')}}
-  User: {{{parts.[0].text}}}
+  {{#if (eq this.role 'model')}}
+  Assistant: {{{this.parts.[0].text}}}
   {{else}}
-  Assistant: {{{parts.[0].text}}}
+  User: {{{this.parts.[0].text}}}
   {{/if}}
   {{/each}}
   
