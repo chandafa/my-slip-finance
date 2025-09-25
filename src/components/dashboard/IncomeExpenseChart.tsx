@@ -20,12 +20,10 @@ import { useTranslation } from "@/hooks/use-translation";
 
 const chartConfig = {
   income: {
-    label: "Pemasukan",
-    color: "hsl(var(--color-income))",
+    color: "hsl(var(--income))",
   },
   expense: {
-    label: "Pengeluaran",
-    color: "hsl(var(--color-expense))",
+    color: "hsl(var(--expense))",
   },
 }
 
@@ -115,5 +113,3 @@ export function IncomeExpenseChart() {
     </Card>
   )
 }
-
-    
