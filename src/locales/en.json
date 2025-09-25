@@ -229,5 +229,9 @@
     "accessibility_haptic_label": "Haptic Notifications",
     "accessibility_qr_reader_label": "Voice QR/Barcode Reader",
     "cash_flow_calendar_title": "Cash Flow Calendar",
-    "cash_flow_calendar_desc": "Your upcoming income & expenses schedule."
+    "cash_flow_calendar_desc": "Your upcoming income & expenses schedule.",
+    "customize_dashboard_title": "Customize Dashboard",
+    "customize_dashboard_desc": "Reorder the cards on your dashboard."
 }
+
+    

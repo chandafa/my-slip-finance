@@ -229,5 +229,9 @@
     "accessibility_haptic_label": "Notifikasi Haptik",
     "accessibility_qr_reader_label": "Pembaca QR/Barcode Suara",
     "cash_flow_calendar_title": "Kalender Arus Kas",
-    "cash_flow_calendar_desc": "Jadwal pemasukan & pengeluaran Anda."
+    "cash_flow_calendar_desc": "Jadwal pemasukan & pengeluaran Anda.",
+    "customize_dashboard_title": "Sesuaikan Dasbor",
+    "customize_dashboard_desc": "Atur ulang urutan kartu di dasbor Anda."
 }
+
+    
